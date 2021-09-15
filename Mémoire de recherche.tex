@@ -1,0 +1,120 @@
+\documentclass[french]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{titlesec}
+
+\date{September 23, 2021}
+\author{\bsc{Réda Bensahla - Université de Lille} }
+
+\title{Le Mouvement Brownien Fractionnaire appliqué à la Log-Volatilité des actifs financiers (Rough Volatility)}
+
+\begin{document}
+   \maketitle 
+   \newpage
+   \renewcommand{\contentsname}{Sommaire}
+      \tableofcontents
+
+   \newpage   
+   \section{Introduction}
+
+      \subsection{L'utilisation du mouvement brownien dans les modèles financiers modernes}
+	Dans la modélisation financière moderne, les prix ont toujours été modélisés par des martingales semi-continues, de plus, il a toujours été nécessaire de présenter certaines hypothèses, qui aujourd'hui peuvent être remises en cause, notamment :
+	\begin{itemize}
+    		\item L'hypothèse de normalité des rendements, ceux-ci présentent en général des asymétries et des queues épaisses.
+   		\item La continuité des cours, pour cela il suffit d'observer les sauts, plus communément appelés "gaps" entre deux instants de quotations de cours.
+    		\item Mais surtout, et le plus important, l'hypothèse d'indépendance des accroissements, en effet, il s'agit ici d'ignorer l'impacts des évènements réalisés dans le passé, pour cela, Mandelbrot préconise d'utiliser le mouvement Brownien Fractionnaire à la place du mouvement Brownien.
+	\end{itemize} 
+	C'est donc ce point qui nous a amené à faire cette étude sur le mouvement Brownien Fractionnaire, de plus, la Log-Volatilité étant fractionnaire l'utilisation de ce mouvement Brownien nous donne donc des modèles assez consistant, cependant, comme nous le verrons par la suite, il est assez difficile à mettre en place.
+     
+      \subsection{Modélisation de la volatilité}
+      Les Logs-prix sont souvent modélisés comme des semi-martingales continues. Pour un actif donné avec un Log-Prix $Y_t$, ce dernier peut être modélisé comme suit : \[ dY_t = \mu_t dt + \sigma_t dWt\] où $\mu_t$ est le terme de drift et $W_t$ est un mouvement brownien uni-dimensionnel.
+      Le terme $\sigma_t$ représente quant à lui le processus de volatilité du modèle.
+      D'un côté nous avons des modèles comme le modèle de Black-Scholes où la volatilité est souvent constante ou est une fonction déterministe du temps, puis d'un autre côté, nous avons des modèles à volatilité stochastiques, la volatilité $\sigma_t$ est modélisée par une semi-martingale brownienne, parmi ces modèles nous pouvons citer le                                 	modèle de Heston dont voici la dynamique de la volatilité: \[ d\nu_t = \kappa(\theta - \nu_t)dt + \xi \sqrt{\nu_t} dB_t\] Ou encore le modèle CEV ("Constant Elasticity of Variance Model") dont la volatilité est stochastique mais déterministe, sa dynamique s'écrit comme suit :  \[ dS_t = \mu S_tdt + \sigma S_t^\gamma dB_t\]
+      
+      \subsection{Le mouvement brownien fractionnaire}
+      	\subsubsection{Définition}
+     	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B_H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  :  \[ B_H(t) := \int_{\mathbb{R}} [ (t-s)_+^{H-\frac{1}{2}}-(-s)_+^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
+	  Où : $B_H(0) = 0$ et $B(s)$ représente le mouvement brownien standard
+      	
+	\subsubsection{Fonction de covariance et d'auto-covariance}
+     	  Sa fonction de covariance $\Gamma(t,s)$ et d'autocovariance $\gamma(t,s)$ sont données par :
+     	   \[  \Gamma(t,s) = \mathbb{E} [B_H(s)B_H(t)] = \frac{C_H}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
+	   \[  \gamma(t,s) =  \frac{C_H}{2}(\lvert t-s-1 \rvert^{2H}  -   2\lvert t-s \rvert^{2H}      +     \lvert t-s+1 \rvert^{2H}))  \]
+      	  où \[ C_H = Var[B_H(1)]\] 
+    	  Lorsque $C_H = 1$ ce processus est appelé Mouvement Brownien Fractionnaire standard, de plus lorsque H = $\frac{1}{2}$, le mouvement brownien fractionnaire correspond à un mouvement brownien standard \newline \newline
+	  
+	  De plus, lorsque H = $\frac{1}{2}$, $\forall \lvert k \rvert \geq 1$ $\gamma(k) = 0$, ainsi les accroissements sont donc indépendants
+	  
+	  \subsubsection{Simulation du mouvement brownien fractionnaire} 
+	  Nous allons donc présenter ici deux méthodes de simulations du mouvement brownien fractionnaire : La méthode de Cholesky et la méthode de Davies and Harte) \newline
+	  	\paragraph{Méthode de Cholesky}
+		Il s'agit ici d'une méthode qui est exacte en théorie, mais qui n'est malheureusement pas très utile en pratique car son execution nécessite beaucoup de temps. \newline
+		Posons $\Gamma$ la matrice de covariance du mouvement brownien discrétisé aux instants $\frac{i}{n}$, pour $i = 0,\ldots,n-1.$ \newline
+		La méthode de Cholesky consiste à déduire $\Gamma^\prime$ de $\Gamma$ en supprimant la première ligne et la première colonne, la matrice $\Gamma^\prime$ est symétrique définie positive et admet donc
+		une décomposition de Cholesky $\Gamma^\prime = LL^t$ où $L$ est est une matrice triangulaire inférieure.\newline \newline
+		Par la suite, on effectue le produit matriciel $LZ$ où $Z$ est un vecteur de $n-1$ variables aléatoires indépendantes gaussiennes centrées et réduite, le vecteur $LZ$ est un vecteur gaussien centré et on a : $\mathbb{E}[(LZ)(LZ)^t] = \Gamma^\prime$ \newline \newline
+	  	Ainsi, le vecteur $B_H = (0, (LZ)^t)^t$ représente une trajectoire du mouvement brownien discrétisé.
+  	
+		\paragraph{Méthode de Davies et Harte}
+		(Trop farfelu à expliquer, est-ce une bonne idée ? Où mettre une autre technique ?)
+		
+		\paragraph{Exemples de simulation du mouvement brownien fractionnaire avec différentes valeurs de H}
+		(Simulations du mouvement brownien fractionnaire à venir)
+		
+	 \subsubsection{Le processus d'Ornstein-Uhlenbeck associé au Mouvement Brownien Fractionnaire}
+     	   Le processus de Ornstein-Ulhenbeck associé au mouvement brownien fractionnaire associé est donné par l'équation suivante : 
+      	   \[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^h_t\] 
+	   
+	   
+
+			
+	   
+      \subsubsection{Simulations du mouvement brownien fractionnaire et du processus d'Ornstein-Uhlenbeck associé}
+      	  Ce processus est très utile pour modéliser des taux, voici une simulation de ce processus pour : 
+     	 (Simulation)
+      
+      \subsection{La volatilité rugueuse}
+      	\subsubsection{Définition}
+      		Les différents modèles historiques dans la modélisation financière moderne proposent deux approches concernant le processus de volatilité $\sigma_t$ : 
+		\begin{itemize}
+    			\item Premièrement, des trajectoires assez régulières (constantes ou déterministes), dans le cas du modèle de Black-Scholes standard.
+   			\item Deuxièmement, dans le cas des modèles à volatilité locales ou stochastiques, comme le modèle de Heston, les trajectoires de volatilité modélisées correspondaient pratiquement à celles du mouvement brownien standard.
+		\end{itemize}
+	Dans l'article de Comte et Renault, les auteurs proposent, en partant du fait que la volatilité est un processus à mémoire-longue, de modéliser la log-volatilité en utilisant un mouvement brownien fractionnaire avec pour paramètre $H \in ]\frac{1}{2},1[$, ce modèle est appelé Fractional Stochastic Volatility (FSV) \newline \newline
+	
+	Dans l'article de Gatheral, Jaisson et Rosenbaum, un modèle plus complexe est proposé, le Rough Fractional Stochastic Volatility (RFSV), celui-ci est le même que le modèle FSV mais en prenant $H \in ]0; \frac{1}{2}[$, nous détaillerons ces modèles dans la section ().\newline \newline
+	
+	Nous utiliserons par la suite le mouvement brownien fractionnaire afin de modéliser les incréments de la log-volatilité, en partant du principe que les incréments stationnaires du mouvement brownien fractionnaire satisfont, pour tout $t \in \mathbb{R}, \Delta \geq 0, q>0$ : 
+	 \[ \mathbb{E}[\lvert B_{t+\Delta}^H -  B_t^H \rvert^q]  = K_q\Delta^{qH}     \] 
+      	Où $K_q$ représente le moment d'ordre $q$ de la valeur absolue d'une variable gaussienne centrée et réduite; $\Delta$ représente la variation temporelle. \newline \newline
+	L'approche de Gatheral et Rosenbaum est de partir du principe que l'on accès à différentes observations du processus de volatilité $\sigma_t$ et de découper les instants de volatilités sur $[0;T]$ comme suit : $\sigma_0, \ldots, \sigma_\Delta, \dots, \sigma_k\Delta, \dots, k \in {[0,  N]}$, où $N = \left\lfloor {T/\Delta} \right\rfloor$.
+	
+	
+	\newpage
+	\subsubsection{Estimation de l'index de Hurst H} 
+	 On suppose les éléments suivants connus : 
+	 \begin{itemize}
+    		\item La trajectoire d'un mouvement brownien fractionnaire $B_H$ de taille n
+   		\item Le vecteur des accroissements, que l'on appellera X
+	\end{itemize}
+	Nous allons présenter trois méthodes d'estimation de H, commençons par la méthode du maximum de vraisemblance.
+		\paragraph{Estimation par maximum de vraisemblance : Estimateur de Whitle}
+         
+   \newpage
+
+   
+   \section*{Conclusion}
+   \addcontentsline{toc}{section}{Conclusion}
+   
+   \appendix 
+   \section{Preuves}
+
+  
+   \section{Bibliographie}
+
+
+
+\end{document}
