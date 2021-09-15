@@ -46,8 +46,6 @@
       	  où \[ C_H = Var[B_H(1)]\] 
     	  Lorsque $C_H = 1$ ce processus est appelé Mouvement Brownien Fractionnaire standard, de plus lorsque H = $\frac{1}{2}$, le mouvement brownien fractionnaire correspond à un mouvement brownien standard \newline \newline
 	  
-	  De plus, lorsque H = $\frac{1}{2}$, $\forall \lvert k \rvert \geq 1$ $\gamma(k) = 0$, ainsi les accroissements sont donc indépendants
-	  
 	  \subsubsection{Simulation du mouvement brownien fractionnaire} 
 	  Nous allons donc présenter ici deux méthodes de simulations du mouvement brownien fractionnaire : La méthode de Cholesky et la méthode de Davies and Harte) \newline
 	  	\paragraph{Méthode de Cholesky}
@@ -90,7 +88,9 @@
 	Nous utiliserons par la suite le mouvement brownien fractionnaire afin de modéliser les incréments de la log-volatilité, en partant du principe que les incréments stationnaires du mouvement brownien fractionnaire satisfont, pour tout $t \in \mathbb{R}, \Delta \geq 0, q>0$ : 
 	 \[ \mathbb{E}[\lvert B_{t+\Delta}^H -  B_t^H \rvert^q]  = K_q\Delta^{qH}     \] 
       	Où $K_q$ représente le moment d'ordre $q$ de la valeur absolue d'une variable gaussienne centrée et réduite; $\Delta$ représente la variation temporelle. \newline \newline
-	L'approche de Gatheral et Rosenbaum est de partir du principe que l'on accès à différentes observations du processus de volatilité $\sigma_t$ et de découper les instants de volatilités sur $[0;T]$ comme suit : $\sigma_0, \ldots, \sigma_\Delta, \dots, \sigma_k\Delta, \dots, k \in {[0,  N]}$, où $N = \left\lfloor {T/\Delta} \right\rfloor$.
+	L'approche de Gatheral et Rosenbaum est de partir du principe que l'on a accès à différentes observations du processus de volatilité $\sigma_t$ et de découper les instants de volatilités sur $[0;T]$ comme suit : $\sigma_0, \ldots, \sigma_\Delta, \dots, \sigma_k\Delta, \dots, k \in {[0,  N]}$, où $N = \left\lfloor {T/\Delta} \right\rfloor$.
+	On définit donc, pour $q \geq 0$ :
+	\[ m(q, \Delta) = \frac{1}{N} \sum_{k=1}^N\lvert log(\sigma_{k\Delta}) - log(\sigma_{(k-1)\Delta}) \rvert^{q}  \] 
 	
 	
 	\newpage
