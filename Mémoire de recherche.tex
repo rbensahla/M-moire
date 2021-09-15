@@ -87,22 +87,18 @@
 	
 	Nous utiliserons par la suite le mouvement brownien fractionnaire afin de modéliser les incréments de la log-volatilité, en partant du principe que les incréments stationnaires du mouvement brownien fractionnaire satisfont, pour tout $t \in \mathbb{R}, \Delta \geq 0, q>0$ : 
 	 \[ \mathbb{E}[\lvert B_{t+\Delta}^H -  B_t^H \rvert^q]  = K_q\Delta^{qH}     \] 
+	 Lorsque $H > \frac{1}{2}$, les incréments du mouvement brownien fractionnaire sont positivement corrélés et montre un effet de mémoire longue, en effet, la trajectoire de $B_{t+1}^H$ dépend de $B_t^H$, et on a donc :  	 \[  \sum_{k=0}^{+\infty}Cov[W_1^H, W_k^H - W_{k-1}^H] = +\infty   \]  \newline
+	 En effet, $Cov[W_1^H, W_k^H - W_{k-1}^H]$ est de l'ordre $k^{2H-2}$ avec $k\longrightarrow \infty$
+	 
       	Où $K_q$ représente le moment d'ordre $q$ de la valeur absolue d'une variable gaussienne centrée et réduite; $\Delta$ représente la variation temporelle. \newline \newline
 	L'approche de Gatheral et Rosenbaum est de partir du principe que l'on a accès à différentes observations du processus de volatilité $\sigma_t$ et de découper les instants de volatilités sur $[0;T]$ comme suit : $\sigma_0, \ldots, \sigma_\Delta, \dots, \sigma_k\Delta, \dots, k \in {[0,  N]}$, où $N = \left\lfloor {T/\Delta} \right\rfloor$.
+	
 	On définit donc, pour $q \geq 0$ :
 	\[ m(q, \Delta) = \frac{1}{N} \sum_{k=1}^N\lvert log(\sigma_{k\Delta}) - log(\sigma_{(k-1)\Delta}) \rvert^{q}  \] 
 	
-	
-	\newpage
-	\subsubsection{Estimation de l'index de Hurst H} 
-	 On suppose les éléments suivants connus : 
-	 \begin{itemize}
-    		\item La trajectoire d'un mouvement brownien fractionnaire $B_H$ de taille n
-   		\item Le vecteur des accroissements, que l'on appellera X
-	\end{itemize}
-	Nous allons présenter trois méthodes d'estimation de H, commençons par la méthode du maximum de vraisemblance.
-		\paragraph{Estimation par maximum de vraisemblance : Estimateur de Whitle}
-         
+	\subsubsection{Estimation de l'index de Hurst H}
+	 
+
    \newpage
 
    
