@@ -5,6 +5,8 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{titlesec}
+\usepackage{graphicx}
+
 
 \date{September 23, 2021}
 \author{\bsc{Réda Bensahla - Université de Lille} }
@@ -60,19 +62,17 @@
 		une décomposition de Cholesky $\Gamma^\prime = LL^t$ où $L$ est est une matrice triangulaire inférieure.\newline \newline
 		Par la suite, on effectue le produit matriciel $LZ$ où $Z$ est un vecteur de $n-1$ variables aléatoires indépendantes gaussiennes centrées et réduite, le vecteur $LZ$ est un vecteur gaussien centré et on a : $\mathbb{E}[(LZ)(LZ)^t] = \Gamma^\prime$ \newline \newline
 	  	Ainsi, le vecteur $B_H = (0, (LZ)^t)^t$ représente une trajectoire du mouvement brownien discrétisé.
-		
-	 \subsubsection{Le processus d'Ornstein-Uhlenbeck associé au Mouvement Brownien Fractionnaire}
-     	   Le processus de Ornstein-Ulhenbeck associé au mouvement brownien fractionnaire associé est donné par l'équation suivante : 
-      	   \[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^h_t\] 
-	   
-	   
-
 			
 	   
-      \subsubsection{Simulations du mouvement brownien fractionnaire et du processus d'Ornstein-Uhlenbeck associé}
-      	  Ce processus est très utile pour modéliser des taux, voici une simulation de ce processus pour : 
-     	 (Simulation)
+      \subsubsection{Quelques simulations du mouvement brownien fractionnaire \dots }
       
+     	 \begin{figure}[!h]
+  		\includegraphics[width=\linewidth]{SimulationsMouvementBrownienFractionnaireH.png}
+  		\caption{Simulation du mouvement brownien fractionnaire pour différentes valeurs de H}
+ 		\label{fig:Simulation du mouvement brownien fractionnaire pour différentes valeurs de H}
+	\end{figure}
+	\newpage
+	
       \subsection{La volatilité rugueuse}
       	\subsubsection{Définition}
       		Les différents modèles historiques dans la modélisation financière moderne proposent deux approches concernant le processus de volatilité $\sigma_t$ : 
@@ -112,19 +112,37 @@
 		Où $B_t^H$ est un mouvement brownien fractionnaire standard. \newline 
 		Une présentation alternative, sous forme d'intégrale :
 		  \[ Y_t = Y_s + \int_{s}^{t}f(Y_u, u)du + \int_{s}^{t}g(Y_u, u)dB_u^H \tag{1} \] 
-		Pour le cas où $H=\frac{1}{2}$ l'intégrale stochastique de l'équation (1) est une martingale, ainsi le le processus $Y_t$ est, au minimum, une semi-martingale, ainsi la formule d'Itô est applicable. \newline
+		Pour le cas où $H=\frac{1}{2}$ l'intégrale stochastique de l'équation (1) est une martingale locale, ainsi le le processus $Y_t$ est, au minimum, une semi-martingale, ainsi la formule d'Itô est applicable. \newline
 		Cependant, dans le cas où $H \ne \frac{1}{2}$ il est nécessaire de discuter les cas en fonction de H : 
 		\begin{itemize}
-    			\item Dans le cas où $H > \frac{1}{2}$ 
-   			\item Dans le cas où $H \in ]\frac{1}{4};\frac{1}{2}]$
+    			\item Dans le cas où $H > \frac{1}{2}$ sous certaines conditions de régularité, on peut définir l'intégrale de Stieltjes.
+   			\item Dans le cas où $H \in ]\frac{1}{4};\frac{1}{2}[$ on pourrait définir une notion de chemins rugueux pour définir des intégrales stochastiques fractionnaires.
 		\end{itemize}
 	\subsubsection{Chemins rugueux}
 	
 	\subsubsection{Schéma numérique de Milstein}
-		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. \newline
-		Le Schéma de Milstein est valable pour tout $H \in ]0;1[$
+		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. \newline \newline
+		Le Schéma de Milstein est valable pour tout $H \in ]0;1[$, sa formule est donnée par :
+		\begin{multline}
+ 			\chi(t_{i+1}) =  \chi(t_i) + f(\chi(t_i), ti)\Delta t + g(\chi(t_i), t_i)\Delta B_i^H \\ + \frac{1}{2}g(\chi(t_i), t_i)g\prime(\chi(t_i), ti) [(\Delta B_i^H)^2 - (t_{i+1}^{2H} - t_i^{2H})] + \epsilon_i
+		\end{multline}
+		$\epsilon_i$ représente un résidu (différence entre la solution théorique et la solution numérique donnée par la solution numérique de Milstein) \newline \newline
+		On peut donner une version plus courte et plus pratique de la formule, en partant du principe que : 
+		$t_{i+1}^{2H} = (t_i + \Delta t)  \approx t_i^{2H} + 2Ht_i^{2H-1}\Delta t$ \newline \newline
+		Ce qui nous donne donc : 
+		\begin{multline}
+ 			\chi(t_{i+1}) =  \chi(t_i) + f(\chi(t_i), ti) - g(\chi(t_i), t_i)g\prime(\chi(t_i), t_i)Ht_i^{2H-1})\Delta t  \\ + g(\chi(t_i), t_i)\Delta B_i^H  + \frac{1}{2}g(\chi(t_i), t_i)g\prime(\chi(t_i), t_i)(\Delta B_i^H)^2 + \epsilon_i\prime
+		\end{multline}
+		$\epsilon_i\prime$ représente le résidu, supérieur à $\epsilon_i$ car l'approximation de $t_{i+1}^{2H}$ accroît cette marge d'approximation.
 		
+	\subsection{Modèles et Processus construits sur le mouvement brownien fractionnaire}
+		\subsubsection{Présentation du processus d'Ornstein-Uhlenbeck fractionnaire}
+			Le processus de Ornstein-Ulhenbeck associé au mouvement brownien fractionnaire associé est donné par l'équation suivante : 
+      	 		\[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^h_t\] 
+		\subsubsection{}
+			
 	
+		
    \newpage
 
    
