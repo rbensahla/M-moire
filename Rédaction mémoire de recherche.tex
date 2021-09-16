@@ -136,11 +136,48 @@
 		$\epsilon_i\prime$ représente le résidu, et est supérieur à $\epsilon_i$ car l'approximation de $t_{i+1}^{2H}$ accroît cette marge d'approximation.
 		
 	\subsection{Modèles et Processus construits sur le mouvement brownien fractionnaire}
+		\subsubsection{Linéarisation d'équations différentielles stochastiques unidimensionnelle}
+			Pour pouvoir avancer dans la suite de notre étude (pour pouvoir donner une solution exacte du Processus d'Ornstein-Uhlenbeck fractionnaire) nous avons besoin d'introduire, suivant la présentation de [UD07], une méthode de construction de solutions théoriques. \newline
+			\paragraph{Théorème 1} Posons : 
+			\[ dx = f(x,t)dt + g(x,t)dB^H(t)  \tag{1} \] 
+			Où $x(0) = x_0, t \geq 0, H \in (0,1)$ et $dB^H(t)$ l'incrément du mouvement brownien fractionnaire $B^H(t)$ , avec f et g, deux fonctions supposées assez régulières, l'équation (1) peut s'écrire sous la forme linéaire suivante : 
+			\[ dy = (a(t)y + b(t)dt)dt + (c(t)y + e(t))dB^H(t) \tag{2} \] 
+			Via la transformation inverse $y=h(x,t)$ avec sa dérivée partielle par rapport à $x$ non-nulle si et seulement si on a :
+			\[ \frac{\partial}{\partial x}\left(\frac{\frac{\partial}{\partial x}(g(x, t)) \frac{\partial}{\partial x}(g(x,t)L)}{\frac{\partial}{\partial x}(g(x, t)L)}\right) = 0  \] 
+			Avec $L = \frac{\partial}{\partial x}\left(\frac{1}{g}\right) +  \frac{\partial}{\partial x} \left(\frac{f}{g} - Ht^{2H - 1} \frac{\partial g}{\partial x}\right) $ \newline
+			Les étapes de la linéarisation sont les suivantes, et dépendent de $c(t)$ de l'équation (2) : 
+			\begin{itemize}
+    				\item Si c(t) = 0 alors on a :
+					\[ h(x,t) = \left(    \int \alpha(t)dt    \right)^{-1}    \left(    \int \frac{1}{g(x,t)}dx   \right) \] 	
+					La condition $\frac{\partial}{\partial x}\left(\frac{\frac{\partial}{\partial x}(g(x, t)) \frac{\partial}{\partial x}(g(x,t)L)}{\frac{\partial}{\partial x}(g(x, t)L)}\right) = 0$ est bien respectée et l'équation différentielle stochastique linéaire s'écrit donc : 
+					\[ dy = \beta(t)e(t)dt + e(t)dB^H\] \newline
+					avec $e(t) = \left(    \int \alpha(t)dt    \right)^{-1}$, $\alpha$ et $\beta$ sont définies par identification dans l'égalité : 
+					\[ \alpha(t)y + \beta(t) = \int \frac{\partial}{\partial t} \left( \frac{1}{g}\right) + \frac{f}{g} - Ht^{2H-1} \frac{\partial g}{\partial x} \] 
+					
+   				\item Si $c(t) \ne 0$ alors on a :
+					\[ h(x,t) = e^{-M(t) \int \frac{1}{g(x,t)}dx}\] \newline
+					Avec $M(t) = \frac{\frac{\partial}{\partial x}(g(x, t)) \frac{\partial}{\partial x}(g(x,t)L)}{\frac{\partial}{\partial x}(g(x, t)L)} $
+			\end{itemize}
+			Nous avons maintenant une forme linéaire de notre équation, il faut maintenant la résoudre en utilisant la méthode du facteur intégrant, définit comme suit : 
+			\paragraph{Définition 1}
+				La fonction $F=F(t, B^H)$ vérifiant $d(Fy) = D_1(t,B^H)dt + D_2(t,B^H)dB^H$ est un facteur intégrant pour des équations différentielles stochastiques linéaires unidimensionnelles, on peut donc écrire : 
+				\[ F(t, W^H) = exp \left(- \int_{}^{t} c(s)dB^H(s) + H \int_{}^{t}s^{2H - 1}c^2(s)ds - \int_{}^{t} a(s)ds \right) \] 
+				Par suite, on a donc la solution de l'équation différentielle stochastique linéaire suivante :
+				\[ y(t) = \frac{1}{F}\left( \int_{}^{t} F(s)b(s)ds - 2H \int_{}^{s} s^{2H-1}F(s)c(s)e(s)ds + \int_{}^{t}F(s)e(s)dB^H(s)+y_0 \right) \] 
+				
 		\subsubsection{Présentation du processus d'Ornstein-Uhlenbeck fractionnaire}
 			Le processus de Ornstein-Ulhenbeck associé au mouvement brownien fractionnaire associé est donné par l'équation suivante : 
-      	 		\[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^h_t\] 
-		\subsubsection{}
+      	 		\[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^H_t\] 
+			Ce processus est souvent utilisé pour modéliser des taux en finance.
 			
+		
+		\subsubsection{Solution théorique excacte}
+		Pour donner une solution théorique exacte on utilise la méthode du facteur intégrant précédemment introduit (cf section 1.6.1) dont l'expression est la suivante : $F(t) = e^{\int_{}^{t}\theta(s)ds}$ \newline
+		On a donc la solution suivante :
+		\[ y(t) = e^{\int_{}^{t} \theta(s)ds}\left(  \int_{}^{t} e^{\int \theta(s)ds} \theta(s)\mu(s)ds + \int_{}^{t} e^{\int \theta(s)ds} \sigma(s)dB^H(s) +y_0 \right) \tag{3}\] \newline
+		 Il s'agit maintenant de donner une solution numérique à (3). 
+		Pour cela, on utilise le schéma de Milstein et on a donc, pour le paramètre de Hurst H quelconque : 
+		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta_t + \sigma B_j^H \] 
 	
 		
    \newpage
