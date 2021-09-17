@@ -178,8 +178,48 @@
 		 Il s'agit maintenant de donner une solution numérique à (3). 
 		Pour cela, on utilise le schéma de Milstein et on a donc, pour le paramètre de Hurst H quelconque : 
 		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta_t + \sigma B_j^H \] 
-	
 		
+		\paragraph{Quelques simulations du processus d'Ornstein-Uhlenbeck fractionnaire \dots}
+		\begin{figure}[!h]
+  			\includegraphics[width=\linewidth, height=80mm]{SimulationspO-U-H.png}
+  			\caption{Simulation du processus d'Ornstein-Uhlenbeck pour différentes valeurs de H}
+ 			\label{fig:Simulation du processus d'Ornstein-Uhlenbeck pour différentes valeurs de H}
+		\end{figure}
+		\newpage
+		
+		
+		\subsubsection{Modèle de Cox-Ingersoll-Ross}
+			Le modèle CIR dirigé par un mouvement brownien fractionnaire est défini par la dynamique suivante : 
+			\[ dx = \gamma(t)(\theta(t)-x)dt + \sigma(t)\sqrt{x}dB^H(t) \]
+			Ce modèle est utilisé afin de modéliser l'évolution de taux d'intérêts \newline
+			On a : $f(x,t) = \gamma(t)(\theta(t)-x)$, $g(x,t) = \sigma(t)\sqrt{x}$. On a donc $L = \frac{1}{2} \frac{\sigma(t)}{\sqrt{x}} + \frac{\sigma(t)}{\sigma(t)} \frac{-1}{2}x^{-\frac{3}{2}}\theta(t) - \frac{1}{2}x^{-\frac{1}{2}} -Ht^{2H-1}\frac{-\sigma(t)}{4}x^{-\frac{3}{2}}$ \newline \newline
+			Puis on a : $\frac{\partial}{\partial x} g(x,t)L = x^{-2}(\frac{1}{2}\gamma(t)\theta(t) -  \frac{\sigma(t)^2}{4} Ht^{2H-1}$ \newline \newline
+			On remarque que pour $\sigma(t) = \sqrt{\frac{2\gamma(t)\theta(t)}{Ht^{2H-1}}},$ $\frac{\partial}{\partial x} g(x,t)L$ s'annule et donc d'après la méthode décrite dans 1.6.1 on peut écrire l'équation différentielle stochastique sous forme linéaire.
+			Nous devons d'abord déterminer $\alpha(t)y$ comme décrit à la section 1.6.1 :
+			\[ \alpha(t)y+\beta(t) = 2x^{\frac{1}{2}} \frac{\partial}{\partial t} \frac{1}{\sigma(t)} + \frac{\gamma(t)}{\sigma(t)} (\theta(t)x^{-\frac{1}{2}} - x^\frac{1}{2}) - \frac{1}{2}Ht^{2H-1}\sigma(t)x^{-\frac{1}{2}} \]
+			On a donc : 
+			\[ \alpha(t)y+\beta(t) = x^\frac{1}{2}(-\frac{\gamma(t)}{\sigma(t)} + 2  \frac{\partial}{\partial t}\frac{1}{\sigma(t)})  \]
+			Or $\beta(t)$ vaut 0 on a donc :
+			\[ (\int \alpha(t)dt)^\prime + (\frac{\gamma(t)}{2} + \sigma(t) \frac{\partial}{\partial t}\frac{1}{\sigma(t)}) \int \alpha(t)dt  = 0 \]
+			On peut donc égaliser : 
+			\[ \int \alpha(t)dt = e^{-\int \frac{\gamma(t)}{2}dt } \sigma(t)^{-1}\]	
+			On obtient finalement : 
+			\[ y = 2e^{\int \frac{\gamma(t)}{2}dt}\sqrt{x} \]
+			On peut donc écrire l'équation différentielle stochastique linéaire : 
+			\[ dy = e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H(t) \]			
+			On obtient la solution en intégrant :
+			\[ y(t) = \int_{0}^{t}e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H(t) + K \] \newline
+			Enfin, on obtient donc la solution du modèle CIR : 
+			\[ x(t) = \left(\frac{1}{2}exp\left(-\int \frac{1}{2} \gamma(t)dt \right) \left(\int_{0}^{t}exp\left(\int \frac{1}{2}\gamma(t)dt \right) \sigma(t)dB^H(t) + \sqrt{x(0)} \right) \right)^2  \]
+			On utilise maintenant un schéma numérique de Milstein afin de donner une solution numérique de l'expression plus haut, on a donc : 
+			\[ X_{j+1} = X_j + (\gamma(\theta-X_j)) - \frac{1}{2}H\sigma^2t_i^{2H-1})\Delta t + \sigma\sqrt{(X_j)} \Delta B_j^H + \frac{1}{4}\sigma^2(\Delta B^H_j)^2\]
+			
+		\paragraph{Quelques simulations du modèle CIR fractionnaire \dots }
+			
+			
+		\subsubsection{Le modèle de Black-Scholes fractionnaire}
+			
+			
    \newpage
 
    
