@@ -96,12 +96,11 @@
 	\[ m(q, \Delta) = \frac{1}{N} \sum_{k=1}^N\lvert log(\sigma_{k\Delta}) - log(\sigma_{(k-1)\Delta}) \rvert^{q}  \] 
 	
 	\subsubsection{Estimation de l'index de Hurst H}
-	(Graphiques à mettre pour appuyer les résultats) \newline
 	La méthode d'estimation du paramètre H proposée par Gatheral, Jaisson et Rosenbaum se construit comme suit : \newline \newline
 	Il faut comprendre le comportement de la quantité $\frac{log \; m(q,\Delta)}{log(\Delta)}$, on s'aperçoit que cette relation est linéaire, à un coefficient $\zeta_q$ près, on s'aperçoit (cf Figure 2) que pour tout $q : \; m(q, \Delta) \propto \Delta^{\zeta_q} $ \newline
 	\begin{figure}[!h]
   		\includegraphics[width=\linewidth, height=80mm]{logM(q,delta)logdelta.png}
-  		\caption{Relation entre $log(m(q, \Delta))$ et $log(\Delta)$}
+  		\caption{Relation entre $log(m(q, \Delta))$ et $log(\Delta)$; Calculé sur l'indice CAC 40}
  		\label{fig:}
 	\end{figure}\newpage
 	Enfin il s'agit d'étudier le comportement de $\zeta_q$ en fonction de $q$, nos résultats nous montrent qu'il existe donc une relation linéaire entre $\zeta_q$ et $q$, de ce résultat est déduit la pente la droite qui correspond donc au paramètre H (cf Figure 3), et on déduit donc la relation d'échelle monofractal suivante :  \[  \zeta_q = qH \]
@@ -193,7 +192,7 @@
 		\[ y(t) = e^{\int_{}^{t} \theta(s)ds}\left(  \int_{}^{t} e^{\int \theta(s)ds} \theta(s)\mu(s)ds + \int_{}^{t} e^{\int \theta(s)ds} \sigma(s)dB^H(s) +y_0 \right) \tag{3}\] \newline
 		 Il s'agit maintenant de donner une solution numérique à (3). 
 		Pour cela, on utilise le schéma de Milstein et on a donc, pour le paramètre de Hurst H quelconque : 
-		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta_t + \sigma B_j^H \] 
+		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta t + \sigma \Delta B_j^H \] 
 		
 		\paragraph{Quelques simulations du processus d'Ornstein-Uhlenbeck fractionnaire \dots}
 		 \phantom{a}
@@ -230,22 +229,35 @@
 			Enfin, on obtient donc la solution du modèle CIR : 
 			\[ x(t) = \left(\frac{1}{2}exp\left(-\int \frac{1}{2} \gamma(t)dt \right) \left(\int_{0}^{t}exp\left(\int \frac{1}{2}\gamma(t)dt \right) \sigma(t)dB^H(t) + \sqrt{x(0)} \right) \right)^2  \]
 			On utilise maintenant un schéma numérique de Milstein afin de donner une solution numérique de l'expression plus haut, on a donc : 
-			\[ X_{j+1} = X_j + (\gamma(\theta-X_j) - \frac{1}{2}H\sigma^2t_i^{2H-1})\Delta t + \sigma\sqrt{(X_j)} \Delta B_j^H + \frac{1}{4}\sigma^2(\Delta B^H_j)^2\]
+			\[ X_{j+1} = X_j + (\gamma(\theta-X_j) - \frac{1}{2}H\sigma^2t_j^{2H-1})\Delta t + \sigma\sqrt{(X_j)} \Delta B_j^H + \frac{1}{4}\sigma^2(\Delta B^H_j)^2\]
 			
 		\paragraph{Quelques simulations du modèle CIR fractionnaire \dots } 
+		 \phantom{a}
+		\begin{figure}[h!]
+  			\includegraphics[width=\linewidth, height=80mm]{SimulationsCIRfrac.png}
+  			\caption{Simulations du modèle CIR fractionnaire pour différentes valeurs de H}
+ 			\label{fig:Simulations du modèle CIR fractionnaire pour différentes valeurs de H}
+		\end{figure}
+		\newpage
 			
 			
 		\subsubsection{Le modèle de Black-Scholes fractionnaire}
 			Le modèle de Black-Scholes existe aussi en version fractionnaire, la partie aléatoire est modélisée par un mouvement brownien fractionnaire. \newline
 			Cependant, ce modèle n'est pas très utilisé en pratiqué car il écarte l'hypothèse d'absence d'opportunités d'arbitrages
-		\subsubsection{Modélisation sous Black-Scholes fractionnaire}
+		\subsubsection{Modélisation d'un actif sous-jacent sous Black-Scholes fractionnaire}
 			La seule différence faite avec le modèle de Black Scholes classique se trouve au niveau du mouvement brownien utilisé, en effet on a : 
 			\[ dS_t = \mu S_t + \sigma S_tdB^H_t\] 
 			Afin de simuler le modèle de Black-Scholes fractionnaire nous utiliserons le schéma de Milstein, on a donc :
 			\[  S_{t_{i+1}} = S_{t_i} + rS_{t_i}\Delta t - \sigma^2 S_{t_i}Ht_i^{2H-1}\Delta t + \sigma S_{t_i} \Delta B_i^H + \frac{1}{2}\sigma^2S_{t_i}(\Delta B_i^H)^2 \] 
 			
 		\paragraph{Quelques simulations du modèle de Black-Scholes fractionnaire \dots}
-		
+		\phantom{a}
+		\begin{figure}[h!]
+  			\includegraphics[width=\linewidth, height=80mm]{SimulationsBSfrac.png}
+  			\caption{Simulations du modèle de Black-Scholes fractionnaire pour différentes valeurs de H}
+ 			\label{fig:Simulations du modèle Black-Scholes fractionnaire pour différentes valeurs de H}
+		\end{figure}
+		\newpage
 			
    \newpage
 
