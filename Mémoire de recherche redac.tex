@@ -281,10 +281,10 @@
 				\[ \mathbb{E}[e^{iaX_t}]  = exp(g(a,t) + V_0h(a, t))\]
 				Où $h$ est la solution de l'équation de Riccati suivante : 
 				\[ \partial_t h = \frac{1}{2}(-a^2 - ia) + \lambda(ia\rho \nu - 1)h(a,s) +  \frac{(\lambda \nu)^2}{2}h^2(a,s), \;\;\; h(a,0) = 0 \]
-				\[ L(t,\lambda V_tS_t) = \mathbb{E}[e^{i\lambda log(S_t)} \lvert f_t]\] \newline
-				Avec $f_t$ la filtration engendrée par les browniens dirigeants la volatilité et le prix.
+				\[ L(t,\lambda, V_t, S_t) = \mathbb{E}[e^{i\lambda log(S_T)} \lvert F_t]\] \newline
+				Avec $F_t$ la filtration engendrée par les browniens dirigeants la volatilité et le prix. \newline
 				$L$ étant une martingale, on a en appliquant la formule d'Itô l'équation suivante (les termes en $dt$ doivent être nuls) : 
-				\[ \partial L = \left(\lambda (\theta - V)\frac{\partial L}{\partial V} + \frac{1}{2} (\lambda v)^2 V \frac{\partial^2 v}{\partial L} + \frac{1}{2}s^2v\frac{\partial L}{\partial S} + \rho V \lambda sV*\frac{\partial^2 SV}{\partial L}  = 0 \right)\] 
+				\[  \partial_t L + \lambda (\theta - V)\partial_V L + \frac{1}{2} (\lambda v)^2 V \partial^2_{VV}L + \frac{1}{2}S^2V \partial_SL  + \rho v \lambda SV \partial^2_{SV}L  = 0\] 
 			\subsubsection{Construction du modèle Rough Heston}
 				Nous reprendrons la construction du modèle Rough Heston tel que Rosenbaum l'a construit.
 				On voudrait un modèle qui prend en compte l'aspect fractionnaire des marchés et qui reproduit les propriétés importantes du modèle de Heston :
@@ -300,7 +300,7 @@
 					\end{figure}
 				\newpage		
 				\end{itemize}
-				En pratique le modèle de Heston, et donc le modèle Rough Heston est utilisé afin de pricer des options exotiques, mais cette modélisation tend à créer une divergence entre le pricing d'options vanilles (faussés) et la modélisation de ces derniers par un modèle à volatilité constante/déterministe (plus réel).
+				En pratique le modèle de Heston, et donc le modèle Rough Heston sont utilisés afin de pricer des options exotiques, mais cette modélisation tend à créer une divergence entre le pricing d'options vanilles (faussés) et la modélisation de ces derniers par un modèle à volatilité constante/déterministe (plus réel).
 		 
 	
 	
