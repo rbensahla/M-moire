@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{titlesec}
 \usepackage{graphicx}
+\usepackage{xr}
 
 
 \date{September 23, 2021}
@@ -264,14 +265,13 @@
 				Le Modèle de Heston standard est un modèle à volatilité stochastique très utilisé, il est définit par la dynamique de prix suivante : 
 				\[ dS_t = S_t\sqrt{V_t}dW_t\] 
 				De plus, il est régit par un processus de variance décrit par l'équation différentielle suivante : 
-				\[ dV_t = \lambda(\theta - V_t)dt + \lambda \nu \sqrt{V_t}dB_t\] avec 	$\langle dW_t, dB_t \rangle = \rho dt$ \newline
+				\[ dV_t = \lambda(\theta - V_t)dt + \lambda \nu \sqrt{V_t}dB_t\] avec 	$\langle dW_t, dB_t \rangle = \rho dt$, avec $\rho \in [-1;1]$ \newline
 				$W_t$ et $B_t$  sont deux mouvement brownien standard
 			\subsubsection{Modèle de Heston dirigé par un mouvement brownien fractionnaire}
 				Dans le modèle de Heston fractionnaire, le processus de volatilité est dirigé par un mouvement brownien fractionnaire, comme vu précédemment, selon Gatheral et Rosenbaum la log-volatilité se comporte comme un mouvement brownien fractionnaire de paramètre de Hurst $H \in ]0;1[$. \newline \newline
-				De plus, cette modélisation (par un mBF) ne modifie en rien les propriétés statistiques de la volatilité.Ainsi les équations différentielles sont données par : 
+				De plus, cette modélisation (par un mBF) ne modifie en rien les propriétés statistiques de la volatilité.Ainsi l'équation différentielles sont données par : 
 				
 				\[ dS_t = S_t\sqrt{V_t}dW_t^H\]
-				\[ dV_t = \lambda(\theta - V_t)dt + \lambda \nu \sqrt{V_t}dB_t^H\]
 				Où : $B_t^H$ et $W_t^H$ sont deux mouvements browniens fractionnaires 
 				\newline\newline
 				La solution donnée pour $dV_t$ [Cours Rosenbaumm] est la suivante : 
@@ -281,11 +281,23 @@
 				\[ \mathbb{E}[e^{iaX_t}]  = exp(g(a,t) + V_0h(a, t))\]
 				Où h est a solution de l'équation de Riccati suivante : 
 				\[ \partial_t h = \frac{1}{2}(-a^2 - ia) + \lambda(ia\rho \nu - 1)h(a,s) +  \frac{(\lambda \nu)^2}{2}h^2(a,s), \;\;\; h(a,0) = 0 \]
-				
-				
-				
-				
-				
+			\subsubsection{Construction du modèle Rough Heston}
+				Nous reprendrons la construction du modèle Rough Heston tel que Rosenbaum l'a construit.
+				On voudrait un modèle qui prend en compte l'aspect fractionnaire des marchés et qui reproduit les propriétés importantes du modèle de Heston :
+				\begin{itemize}
+    					\item L'effet de levier : La capacité d'amplification de la capacité d'investissement.
+   					\item Prendre en compte l'effet d'asymétrie (Kurtosis), de queue lourde.
+					\item La modélisation permet de reproduire la dynamique du volatility smile (Dépendance de la volatilité implicite par rapport au Strike $K$), comme prévu par le modèle de Black-Scholes on remarque que la volailité implicite n'est pas constante mais dépendante du strike $K$
+				\phantom{a}
+				\begin{figure}[h!]
+  					\includegraphics[width=\linewidth, height=80mm]{volatilitySmile.jpeg}
+  					\caption{Exemple de volatility smile}
+ 					\label{fig:}
+					\end{figure}
+				\newpage		
+				\end{itemize}
+				En pratique le modèle de Heston, et donc le modèle Rough Heston est utilisé afin de pricer des options exotiques, mais cette modélisation tend à créer une divergence entre le pricing d'options vanilles (faussés) et la modélisation de ces derniers par un modèle à volatilité constante/déterministe (plus réel).
+		 
 	
 	
 	\newpage
@@ -295,6 +307,7 @@
    
    \appendix 
    \section{Code Python pour simulations et estimations}
+
    \section{Preuves}
 
   
