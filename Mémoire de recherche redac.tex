@@ -279,8 +279,12 @@
 				Selon Alos, Fukasawa et Bayer, de tels modèles permettent de bien reproduire le comportement de la surface de volatilité implicite, en particulier la dépendance de la volatilité par rapport au strike (à la monnaie). \newline \newline
 				Dans le modèle de Heston classique la fonction caractéristique des log-prix ($X_t$) est donnée par : $X_t = log(S_t/S_0)$, en particulier cette équation satisfait : 
 				\[ \mathbb{E}[e^{iaX_t}]  = exp(g(a,t) + V_0h(a, t))\]
-				Où h est a solution de l'équation de Riccati suivante : 
+				Où $h$ est la solution de l'équation de Riccati suivante : 
 				\[ \partial_t h = \frac{1}{2}(-a^2 - ia) + \lambda(ia\rho \nu - 1)h(a,s) +  \frac{(\lambda \nu)^2}{2}h^2(a,s), \;\;\; h(a,0) = 0 \]
+				\[ L(t,\lambda V_tS_t) = \mathbb{E}[e^{i\lambda log(S_t)} \lvert f_t]\] \newline
+				Avec $f_t$ la filtration engendrée par les browniens dirigeants la volatilité et le prix.
+				$L$ étant une martingale, on a en appliquant la formule d'Itô l'équation suivante (les termes en $dt$ doivent être nuls) : 
+				\[ \partial L = \left(\lambda (\theta - V)\frac{\partial L}{\partial V} + \frac{1}{2} (\lambda v)^2 V \frac{\partial^2 v}{\partial L} + \frac{1}{2}s^2v\frac{\partial L}{\partial S} + \rho V \lambda sV*\frac{\partial^2 SV}{\partial L}  = 0 \right)\] 
 			\subsubsection{Construction du modèle Rough Heston}
 				Nous reprendrons la construction du modèle Rough Heston tel que Rosenbaum l'a construit.
 				On voudrait un modèle qui prend en compte l'aspect fractionnaire des marchés et qui reproduit les propriétés importantes du modèle de Heston :
