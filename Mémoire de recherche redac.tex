@@ -327,7 +327,7 @@
 				\[ V_t = V_0 + \frac{1}{\Gamma (\alpha)} \int_{0}^{t} (t-s)^{\alpha-1}\lambda(\theta^0(s)-V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_s}dB_s, \]  \newline
 				Avec $\langle dW_t, dB_t \rangle = \rho dt,  \;\;\; \alpha \in (1/2, 1).$
 				
-				\subsubsection{Schéma numérique}
+				\subsubsection{Schéma numérique de calcul de la fonction caractéristique du log-prix dans le modèle Rough Heston}
 					Comme l'on expliqué El Euch et Rosenbaum, l'objectif est de calculer numériquement la fonction caractéristique, nous avons : 
 					\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0 \tag{1},  \] \newline
 					Avec : 
@@ -356,9 +356,14 @@
 					Donc on a :
 					\[ \tilde{h}^P(a, t_{k+1})  =  \sum_{0 \leq j \leq  k} b_{j, k+1}F(a, \hat{h}(a, t_j))\] \newline
 					Avec :
-					\[ b_{j, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha + 1)}((k-j+1)^\alpha - (k-j)^\alpha), \;\;\; 0 \leq j \leq k \]
+					\[ b_{j, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha + 1)}((k-j+1)^\alpha - (k-j)^\alpha), \;\;\; 0 \leq j \leq k \] \newline
 					Et finalement on a donc : 
-					\[ \hat{h}(a, t_{k+1}) = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) + a_{k+1, k+1}F(a, \hat{h}^P(a, t_j)), \;\;\; \hat{h}(a, 0) = 0,  \]
+					\[ \hat{h}(a, t_{k+1}) = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) + a_{k+1, k+1}F(a, \hat{h}^P(a, t_j)), \;\;\; \hat{h}(a, 0) = 0,  \] \newline
+					En théorie, nous devons avoir les résultats de convergence suivants, pour $ t  > 0$ et $a \in \mathbb{R}$ : 
+					\[ \max_{t_j \in [0,t]} \lvert \hat{h}(a, t_j) - h(a, t_j) \rvert = o(\Delta)  \] \newline
+					et, $\epsilon > 0$
+					\[ \max_{t_j \in [\epsilon,t]} \lvert \hat{h}(a, t_j) - h(a, t_j) \rvert = o(\Delta^{2-\alpha})  \] \newline
+									
 					
 					
 	\newpage
