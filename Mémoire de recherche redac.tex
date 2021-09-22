@@ -362,9 +362,24 @@
 					En théorie, nous devons avoir les résultats de convergence suivants, pour $ t  > 0$ et $a \in \mathbb{R}$ : 
 					\[ \max_{t_j \in [0,t]} \lvert \hat{h}(a, t_j) - h(a, t_j) \rvert = o(\Delta)  \] \newline
 					et, $\epsilon > 0$
-					\[ \max_{t_j \in [\epsilon,t]} \lvert \hat{h}(a, t_j) - h(a, t_j) \rvert = o(\Delta^{2-\alpha})  \] \newline
-									
+					\[ \max_{t_j \in [\epsilon,t]} \lvert \hat{h}(a, t_j) - h(a, t_j) \rvert = o(\Delta^{2-\alpha})  \]
+				
+			\subsection{Le modèle rough SABR}
+				\subsubsection{Le modèle SABR classique}
+					Le modèle SABR (stochastic-alpha-bêta-rho) est un modèle à volatilité stochastique utilisé principalement sur les marchés FOREX et les marchés à taux d'intérêt, l'intérêt de ce modèle est que l'on a explicitement une formule fermée pour la volatilité implicite, sa la dynamique est donnée par : 
+					\[ dF_t = \sigma_t(F_t)^{\beta}dW_t  \] 
+					\[ d\sigma_t = \alpha \sigma_t dB_t  \] \newline
+					Avec $f_t : $ Forward, et 
+					$\langle dW_t, dB_t \rangle = \rho dt$, \newline
+					La formule de volatilité implicite est donnée par : 
+					\[ \sigma_B(K,f) = \frac{\alpha \left( 1+ \left[  \frac{(1-\beta)^2}{24} \frac{\alpha^2}{(fK)^{(1-\beta}} + \frac{1}{4}\frac{\rho \beta v \alpha}{(fK)^{(1-\beta)/2}}   + \frac{2-3\rho^2}{24}v^2    \right]T      \right)}{(fK)^{(1-\beta)/2} \left[1+\frac{(1-\beta)^2}{24}ln^2 \frac{f}{K} + \frac{(1-\beta)^4}{1920}ln^4 \frac{f}{K}   \right]} \frac{z}{\chi(z)}\] 					\newline
+					Avec : 
+					\[ z = \frac{v}{\alpha}(fK)^{(1-\beta)/2}ln \frac{f}{K} \] \newline
+					\[ \chi(z) = ln \left[  \frac{\sqrt{1-2\rho z+ z^2}+z - \rho}{1 - \rho}  \right]  \] \newpage
+				\subsubsection{Le modèle Rough SABR}	
+				
 					
+										
 					
 	\newpage
    
