@@ -305,50 +305,62 @@
 				L'approche qui a été utilisé par El Euch et Rosenbaum consiste à regarder des fonctionnelles de processus de Hawkes qui convergent vers le modèle de Rough Heston, l'idée étant que l'on connaît les fonctions caractéristiques des processus de Hawkes, on peut donc facilement à la limite et donc obtenir des formules pour le 					modèle Rough Heston.
 				La fonction caractéristique du log-prix dans le modèle Rough Heston montre la même structure que la fonction caractéristique du modèle de Heston classique.\newline
 				A l'exception que l'équation de Riccati (1) est remplacée par une équation de Riccati fractionnaire où une dérivée fractionnaire est utilisé à la place d'une dérivée classique, on a plus précisément : 
-				\[ \mathbb{E}[e^{iaX_t}] = exp(g_1(a,t) + V_0g_2(a,t)) \]
+				\[ \mathbb{E}[e^{iaX_t}] = exp(g_1(a,t) + V_0g_2(a,t)) \] \newline
 				Avec : 
-				\[ g_1(a, t) = \theta \lambda\int_{0}^{t}h(a,s)ds, g_2(a,t) = I^{1-\alpha}h(a,t), \]
+				\[ g_1(a, t) = \theta \lambda\int_{0}^{t}h(a,s)ds, g_2(a,t) = I^{1-\alpha}h(a,t), \] \newline
 				De plus, $h(a,.)$ est une solution de l'équation de Riccati fractionnaire suivant : 
-				\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0,  \]
+				\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0,  \] \newline
 				Avec $D^\alpha$ et $I^{1-\alpha}$ la dérivée fractionnaire et l'opérateur intégrant définit comme suit : \newline
 				\paragraph{Intégrale fractionnaire}
 					Pour $f : \mathbb{R} \rightarrow \mathbb{R}$ appartenant à $L^1(\mathbb{R})$ on peut définir l'opérateur intégrale fractionnaire de Riemann-Liouville d'ordre $\alpha > 0$ par : 
-					\[ I^{1-\alpha} f(x) = \frac{1}{\Gamma(1-\alpha)}\int_{0}^{x}\frac{f(t)}{(x-t)^\alpha}dt \]
+					\[ I^{1-\alpha} f(x) = \frac{1}{\Gamma(1-\alpha)}\int_{0}^{x}\frac{f(t)}{(x-t)^\alpha}dt \] \newline
 				\paragraph{Dérivée fractionnaire}
 					Dans les mêmes conditions que pour l'intégrale fractionnaire, on peut définir l'opérateur de dérivée fractionnaire comme suit : 
 					\[ D^\alpha f(x) = \frac{d}{dx}f^{1-\alpha}f(x) \] \newpage
 				Il convient de remarquer que lorsque $\alpha = 1$, les résultats coïncident avec les résultats du modèle de Heston classique, cependant lorsque $\alpha < 1$ la solution de l'équation de Riccati ne peuvent être établis explicitement, cependant, elles peuvent être facilement numériquement résolue. \newline
 				Finalement, la loi du processus $(S_t^{t_0}, V_t^{t_0})_{t \geq 0} = (S_{t+t_0}, V_{t+t_0})_{t \geq 0}$ est la loi du modèle Rough Heston dont les dynamiques de volatilités et de prix sont les suivants : 
-				\[ dS_t^{t_0} = S_t^{t_0}\sqrt{V_t^{t_0}}dW_t^{t_0}; \;\;\; S_0^{t_0} = S_{t_0} \] 
-				\[ V_t^{t_0} = V_{t_0} + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta^{t_0}(s)-V_s^{t_0})ds+\frac{\lambda\nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\sqrt{V_s^{t_0}}dB_s^{t_0}\]
+				\[ dS_t^{t_0} = S_t^{t_0}\sqrt{V_t^{t_0}}dW_t^{t_0}; \;\;\; S_0^{t_0} = S_{t_0} \]  \newline
+				\[ V_t^{t_0} = V_{t_0} + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta^{t_0}(s)-V_s^{t_0})ds+\frac{\lambda\nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\sqrt{V_s^{t_0}}dB_s^{t_0}\] \newline
 				Avec : $(W_t^{t_0}, B_t^{t_0}) = (W_{t_0+t}+W_{t_0}, B_{t_0+t}+B_{t_0})$ et $\theta^{t_0}$ est un processus $F_t-$mesurable, dépendant de $(V_u)_{0\leq u \leq t_0}.$ \newline
 				On peut aussi donner une forme généralisée du modèle Rough Heston :
-				\[ dS_t = S_t\sqrt{V_t}dW_t \]
-				\[ V_t = V_0 + \frac{1}{\Gamma (\alpha)} \int_{0}^{t} (t-s)^{\alpha-1}\lambda(\theta^0(s)-V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_s}dB_s, \] 
+				\[ dS_t = S_t\sqrt{V_t}dW_t \] \newline
+				\[ V_t = V_0 + \frac{1}{\Gamma (\alpha)} \int_{0}^{t} (t-s)^{\alpha-1}\lambda(\theta^0(s)-V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_s}dB_s, \]  \newline
 				Avec $\langle dW_t, dB_t \rangle = \rho dt,  \;\;\; \alpha \in (1/2, 1).$
 				
 				\subsubsection{Schéma numérique}
 					Comme l'on expliqué El Euch et Rosenbaum, l'objectif est de calculer numériquement la fonction caractéristique, nous avons : 
-					\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0 \tag{1},  \]
+					\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0 \tag{1},  \] \newline
 					Avec : 
-					\[ F(a,x) = \frac{1}{2}(-a^2 - ia) + \lambda(ia\rho \nu - 1)x +  \frac{(\lambda \nu)^2}{2}x^2, \;\;\; h(a,0) = 0 \]
+					\[ F(a,x) = \frac{1}{2}(-a^2 - ia) + \lambda(ia\rho \nu - 1)x +  \frac{(\lambda \nu)^2}{2}x^2, \;\;\; h(a,0) = 0 \] \newline
 					Bien qu'il existe plusieurs schéma numérique permettant de résoudre numériquement (1), l'approche utilisée est basée sur le fait que (1) implique l'équation de Volterra suivante : 
-					\[ h(a,t) = \frac{1}{\Gamma(\alpha)}\int_{0}^{t} (t-s)^{\alpha-1}F(a,h(a,s))ds\]
+					\[ h(a,t) = \frac{1}{\Gamma(\alpha)}\int_{0}^{t} (t-s)^{\alpha-1}F(a,h(a,s))ds\] \newline
 					Puis de développer un schéma nuémrique basé sur l'équation précédente.
 					En utilisant la méthode fractionaire Adams, où l'idée est la suivante : \newline
 					Posons : $g(a,t) = F(a,h(a,t))$, puis discrétisons la fonction $h$ en utilisant un pas $\Delta$ tel que $(t_k = k\Delta)$, l'estimation de $h$ : 
-					\[h(a, t_{k+1}) = \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}g(a,s)ds \] \newpage
+					\[h(a, t_{k+1}) = \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}g(a,s)ds \] \newline
 					Est donnée par :
-					\[ \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}\hat{g}(a,s)ds \] 
+					\[ \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}\hat{g}(a,s)ds \] \newline
 					Avec : 
-					\[ \hat{g}(a,t) = \frac{t_{j+1} - t}{t_{j+1} - t_j} \hat{g}(a,t_{j})+  \frac{t - t_j}{t_{j+1} - t_j} \hat{g}(a,t_{j+1}), \;\;\; t \in [t_j, t_{j+1}], \;\;\; 0 \leq j \leq  k \]
+					\[ \hat{g}(a,t) = \frac{t_{j+1} - t}{t_{j+1} - t_j} \hat{g}(a,t_{j})+  \frac{t - t_j}{t_{j+1} - t_j} \hat{g}(a,t_{j+1}), \;\;\; t \in [t_j, t_{j+1}], \;\;\; 0 \leq j \leq  k \] \newline
 					Cela nous amène au schéma suivant : 
-					\[ \hat{h}(a, t_{k+1} = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) +   a_{k+1, k+1}F(a, \hat{h}(a, t_{k+1}))\]
+					\[ \hat{h}(a, t_{k+1} = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) +   a_{k+1, k+1}F(a, \hat{h}(a, t_{k+1}))\] \newline
 					Où :
-					\[ a_{0, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)} (k^{\alpha +1} - (k-\alpha)(k+1)^\alpha)\]
-					\[  a_{j, k+1} =  \frac{\Delta^\alpha}{\Gamma(\alpha+2)} ((k-j+2)^{\alpha + 1} + (k-j)^{\alpha+1} + (k-j)^{\alpha + 1} - 2(k-j+1)^{\alpha + 1}), \;\;\; 1 \leq j \leq k \]
+					\[ a_{0, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)} (k^{\alpha +1} - (k-\alpha)(k+1)^\alpha)\] \newline
+					\[  a_{j, k+1} =  \frac{\Delta^\alpha}{\Gamma(\alpha+2)} ((k-j+2)^{\alpha + 1} + (k-j)^{\alpha+1} + (k-j)^{\alpha + 1} - 2(k-j+1)^{\alpha + 1}), \;\;\; 1 \leq j \leq k \] \newline
 					De plus, 
-					\[a_{k+1, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)}  \]
+					\[a_{k+1, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)}  \] \newline
+					On calcule ensuite une pre-estimation de $\hat{h}(a, t_{k+1})$ basée sur une somme de Riemann 
+					\[ \hat{h}^P(a, t_{k+1})  = \frac{1}{\Gamma(\alpha)} \int_{0}^{t}(t-s)^{\alpha - 1}\tilde{g}(a,s)ds,\] \newline
+					Où : 
+					\[ \tilde{g}(a, t) = \tilde{g}(a, t_j), \;\;\; t \in [t_j, t_{j_+1}), \;\;\; 0 \leq j \leq k  \] \newline
+					Donc on a :
+					\[ \tilde{h}^P(a, t_{k+1})  =  \sum_{0 \leq j \leq  k} b_{j, k+1}F(a, \hat{h}(a, t_j))\] \newline
+					Avec :
+					\[ b_{j, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha + 1)}((k-j+1)^\alpha - (k-j)^\alpha), \;\;\; 0 \leq j \leq k \]
+					Et finalement on a donc : 
+					\[ \hat{h}(a, t_{k+1}) = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) + a_{k+1, k+1}F(a, \hat{h}^P(a, t_j)), \;\;\; \hat{h}(a, 0) = 0,  \]
+					
+					
 	\newpage
    
    \section*{Conclusion}
