@@ -327,6 +327,53 @@
 				\[ V_t = V_0 + \frac{1}{\Gamma (\alpha)} \int_{0}^{t} (t-s)^{\alpha-1}\lambda(\theta^0(s)-V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_s}dB_s, \]  \newline
 				Avec $\langle dW_t, dB_t \rangle = \rho dt,  \;\;\; \alpha \in (1/2, 1).$
 				
+				\subsubsection{Démonstration de la loi du couple ($S_t^{t_0}, V_t^{t_0}$) conditionnellement à $F_t$ }
+				Comme l'on démontré El Euch et Rosenbaum, il est nécessaire d'utiliser le théorème de Fubini stochastique, l'objectif est de montrer que $I^{1-\alpha}V	$ est une semi-martingale pour $t > 0$, posons : 
+				\[  (I^{1-\alpha}V)_t = V_0\int_{0}^{t}\frac{s^{-\alpha}}{\Gamma(1-\alpha}ds + \int_{0}^{t} \lambda(\theta^0(s) - V_s)ds + \int_{0}^{t}\nu\sqrt{V_s}dB_s \]
+				On a donc : 
+				\[ \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t+t_0}(t+t_0 - u)^{-\alpha} V_udu \]
+				qui vaut :
+				\[ \frac{1}{\Gamma(1-\alpha)}\int_{0}^{t_0}(t_0-u)^{-\alpha} V_udu + V_0 \int_{t_0}^{t+t_0}\frac{1}{\Gamma(1-\alpha)}u^{-\alpha}du + \int_{t_0}^{t+t_0} \lambda(\theta^0(u) - V_u)du + \int_{t_0}^{t+t_0}\nu\sqrt{V_u}dB_u \]
+				En utilisant un changement de variable $t^\prime = t-t_0$, on a :
+				\[ \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t_0}(t_0-u)^{-\alpha}V_udu + V_0\int_{0}^{t} \frac{1}{\Gamma(1-\alpha)}(t_0+u)^{-\alpha}du + \int_{0}^{t}\lambda(\theta^0(u+t_0)-V_u^{t_0})du +  \int_{0}^{t} \nu \sqrt{V_u^{t_0}}dB_u^{t_0} \]
+				Avec $(B_t^{t_0})_{t \geq 0} = (B_{t+t_0} - B_{t_0})$ est un mouvement brownien indépendant de $F_{t_0}$
+				De plus, on a :
+				\[ I^{1-\alpha}V_t^{t_0}  = \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t}(t-u)^{-\alpha}V_u^{t_0}du = \frac{1}{\Gamma(1-\alpha)} \int_{t_0}^{t+t_0}(t+t_0-u)^{-\alpha}V_udu \]
+				qui vaut :
+				\[ \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t+t_0}(t + t_0-u)^{-\alpha}V_u^{t_0}du - \frac{1}{\Gamma(1-\alpha)} \int_{t_0}^{t_0}(t+t_0-u)^{-\alpha}V_udu \]
+				Et,
+				\[ \frac{1}{\Gamma(1-\alpha)} ((t_0 - u)^{-\alpha} - (t + t_0 - u)^{-\alpha}) = \frac{\alpha}{\Gamma(1-\alpha)}\int_{0}^{t}(t+t_0 - u)^{-1-\alpha}dv  \]
+				Puis on dérive :
+				\begin{multline}
+					I^{1-\alpha}V_t^{t_0} = \frac{1}{\Gamma(1-\alpha}\int_{0}^{t_0} \int_{0}^{t}(t_0-u+v)^{-1-\alpha}dvV_udu + \int_{0}^{t}(t_0+u){-\alpha}duV_0 \\ + \int_{0}^{t}\lambda(\theta^0(u+t_0) - V_u^{t_0}du + \int_{0}^{t} \nu \sqrt{V_u^{t_0}}dB_u^{t_0}
+				\end{multline}
+				On peut encore réécrire cela comme suit : 
+				\[ V_{t_0} \frac{t^{1-\alpha}}{(1-\alpha)\Gamma(1-\alpha)} + \int_{0}^{t} \lambda(\theta^{t_0}(u) - V_u^{t_0})du + \int_{0}^{t}\nu\sqrt{V_u^{t_0}}dB_u^{t_0}, \]
+				Où ($\theta^{t_0}(u))_{u \geq 0}$) est une fonction $F_{t_0}-$mesurable et définit par :  
+				\[ \theta^{t_0}(u) = \theta^0(t_0+u) + \frac{\alpha}{\lambda \Gamma(1-\alpha)} \int_{0}^{t_0}(t_0 - v + u )^{-1-\alpha}(V_u-V_{t_0}dv + \frac{(u+t_0)^{-\alpha}}{\lambda\Gamma(1-\alpha)}(V_0 - V_{t_0}) \] \newline \newline
+				
+				\paragraph{Propriétés de $\theta^{t_0}$}
+					$\theta^{t_0}$ est continue sur $\mathbb{R}_+^+$ et. de plus, pour tout $u >0$ on a :
+					\[ \theta^{t_0}(u) = \theta^0(t_0 + u) + \frac{\alpha}{\lambda\Gamma(1-\alpha)} \int_{0}^{t_0}(t_0 - v + u)^{-1 - \alpha}V_udv + \frac{1}{\lambda \Gamma(1-\alpha)}(V_0(u+t_0)^{-\alpha} - V_{t_0}u^{-\alpha}) \]
+					V est un processus non-négatif et $\theta^0$.
+					Finalement, pour $\epsilon > 0$, V est un processus $\alpha - 1/2 - \epsilon$ Hölder-continue, autrement dit pour chaque $\omega \in \Omega$, et avec $c_\epsilon(\omega)$ tel que pour $x, y \in [0, t_0]$ on a :
+					\[ \lvert V_x - V_y \rvert \leq c_\epsilon(\omega) \lvert x - y \rvert^{\alpha - 1/2 - \epsilon} \]
+					Ensuite, par intégration par parties on a, pour tout u $\in (0, t_0]$:
+					\[ \lvert \int_{0}^{t_0}(t_0 - v + u)^{-1-\alpha}(V_v - V_{t_0})dv \rvert \leq c_\epsilon(\omega)\int_{0}{t_0}(t_0 - v + u)^{-1-\alpha}(t_0 - v)^{\alpha - 1/2 - \epsilon}dv  \]
+					\[ = c_\epsilon(\omega)u^{-1/2 - \epsilon} \int_{0}^{t_0/u}(x+1)^{-1-\alpha}x^{\alpha-1/2-\epsilon}dx \]
+					\[ \leq c_\epsilon(\omega)u^{-1/2 - \epsilon} \int_{0}^{\infty}(x+1)^{-1-\alpha}x^{\alpha - 1/2 - \epsilon}dx\]
+					
+				Pour finir nous avons : 
+					\[ \int_{0}^{t}V_s^{t_0}ds = \frac{1}{\Gamma{\alpha}} \int{0}{t}(t-s)^{\alpha - 1}I^{1-\alpha}V_s^{t_0}ds \]
+				qui vaut :
+					\[ V_{t_0}t + \frac{1}{\alpha}\int_{0}^{t}\int_{0}^{s}(s-u)^{\alpha - 1}\lambda(\theta^{t_0}(u) - V_u^{t_0})duds + \frac{1}{\Gamma(\alpha)} \int_{0}^{t}\int_{0}^{s}(s-u)^{\alpha - 1}\nu\sqrt{V_u^{t_0}}dB_u^{t_0}ds \] \newline
+				On conclut, en différentiant l'équation au dessus que la dynamique de ($S^{t_0}, V^{t_0}$) est donnée par : 
+					\[ S_t^{t_0} = S_{t_0}exp \left(  \int_{0}^{t}\sqrt{V_u^{t_0}}dW_u^{t_0} - \frac{1}{2} \int_{0}^{t}V_u^{t_0}du \right) \] \newline
+					\[ V_t^{t_0} = V_{t_0} + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-u)^{\alpha - 1}\lambda(\theta^{t_0}(u) - V_u^{t_0})du + \frac{1}{\Gamma(\alpha)} \int_{0}^{t}(t-u)^{\alpha - 1}\nu\sqrt{V_u^{t_0}}dB_u^{t_0} \] \newline
+					Où : $(W_t^{t_0})_{t \geq 0} = (W_{t+t_0} - W_{t_0})_{t \leq 0}$ est un mouvement brownien indépendant de $F_{t_0}$ et tel que : $\langle dW_t, dB_t \rangle = \rho$
+					
+				
+				
 				\subsubsection{Schéma numérique de calcul de la fonction caractéristique du log-prix dans le modèle Rough Heston}
 					Comme l'on expliqué El Euch et Rosenbaum, l'objectif est de calculer numériquement la fonction caractéristique, nous avons : 
 					\[ D^\alpha h(a,t) = \frac{1}{2}(-a^2-ia)+\lambda(ia\rho v - 1)h(a,t) + \frac{(\lambda v)^2}{2}h^2(a,t),\;\;\; I^{1-\alpha}h(a,0) = 0 \tag{1},  \] \newline
@@ -376,8 +423,8 @@
 					Avec : 
 					\[ z = \frac{v}{\alpha}(fK)^{(1-\beta)/2}ln \frac{f}{K} \] \newline
 					\[ \chi(z) = ln \left[  \frac{\sqrt{1-2\rho z+ z^2}+z - \rho}{1 - \rho}  \right]  \] \newpage
-				\subsubsection{Le modèle Rough SABR}	
-				
+				\subsubsection{Le modèle SABR dirigé par un mouvement brownien fractionnaire}	
+					
 					
 										
 					
