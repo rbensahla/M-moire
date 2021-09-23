@@ -7,6 +7,9 @@
 \usepackage{titlesec}
 \usepackage{graphicx}
 \usepackage{xr}
+\usepackage{biblatex}
+\usepackage{pdfpages}
+
 
 
 \date{September 23, 2021}
@@ -38,16 +41,51 @@
       D'un côté nous avons des modèles comme le modèle de Black-Scholes où la volatilité est souvent constante ou est une fonction déterministe du temps, puis d'un autre côté, nous avons des modèles à volatilité stochastiques, la volatilité $\sigma_t$ est modélisée par une semi-martingale brownienne, parmi ces modèles nous pouvons citer le                                 	modèle de Heston dont voici la dynamique de la volatilité: \[ d\nu_t = \kappa(\theta - \nu_t)dt + \xi \sqrt{\nu_t} dB_t\] Ou encore le modèle CEV ("Constant Elasticity of Variance Model") dont la volatilité est stochastique mais déterministe, sa dynamique s'écrit comme suit :  \[ dS_t = \mu S_tdt + \sigma S_t^\gamma dB_t\]
       
       \subsection{Le mouvement brownien fractionnaire}
-      	\subsubsection{Définition}
-     	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B_H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  :  \[ B_H(t) := \int_{\mathbb{R}} [ (t-s)_+^{H-\frac{1}{2}}-(-s)_+^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
-	  Où : $B_H(0) = 0$ et $B(s)$ représente le mouvement brownien standard
-      	
-	\subsubsection{Fonction de covariance et d'auto-covariance}
-     	  Sa fonction de covariance $\Gamma(t,s)$ et d'autocovariance $\gamma(t,s)$ sont données par :
-     	   \[  \Gamma(t,s) = \mathbb{E} [B_H(s)B_H(t)] = \frac{C_H}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
-	   \[  \gamma(t,s) =  \frac{C_H}{2}(\lvert t-s-1 \rvert^{2H}  -   2\lvert t-s \rvert^{2H}      +     \lvert t-s+1 \rvert^{2H}))  \]
-      	  où \[ C_H = Var[B_H(1)]\] 
-    	  Lorsque $C_H = 1$ ce processus est appelé Mouvement Brownien Fractionnaire standard, de plus lorsque H = $\frac{1}{2}$, le mouvement brownien fractionnaire correspond à un mouvement brownien standard \newline
+      	\subsubsection{Définition du mouvement brownien fractionnaire}
+     	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B_H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  sa fonction de covariance $\Gamma(t,s)$ : \[  \Gamma(t,s) = \mathbb{E} [B^H(s)B^H(t)] = \frac{C(H)}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
+	  Sa fonction d'auto-covariance $\gamma(t,s)$ est donnée par : 
+	  \[  \gamma(t,s) =  \frac{C(H)}{2}(\lvert t-s-1 \rvert^{2H}  -   2\lvert t-s \rvert^{2H}      +     \lvert t-s+1 \rvert^{2H}))  \]
+	  où \[ C(H) = Var[B^H(1)]\] 
+      	  Où : $B^H(0) = 0$ et $B(s)$ représente le mouvement brownien standard \newline
+    	  Lorsque $C(H) = 1$ ce processus est appelé Mouvement Brownien Fractionnaire standard, de plus lorsque H = $\frac{1}{2}$, le mouvement brownien fractionnaire correspond à un mouvement brownien standard \newline
+	  
+	\subsubsection{Représentation de Mandelbrot-Van-Ness}
+     	  Une autre forme de représentation du mouvement brownien fractionnaire est celle de Mandelbrot-Van-Ness, aussi appelé moving-average representation, celle-ci est donnée par :
+	  \[ B^H(t) := \frac{1}{C(H)}\int_{\mathbb{R}} [ (t-s)_+^{H-\frac{1}{2}}-(-s)_+^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
+	  Avec : $C(H) = \left(  \int_{0}^{\infty} \left((1+s)^{H-\frac{1}{2}} - s^{H - \frac{1}{2}} \right)^2ds + \frac{1}{2H}      \right)^{\frac{1}{2}}$
+	  
+	  Nous allons démontrer ce théorème : \newline
+	  On définit $f_t(s) = ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}, \;\;\; s \in \mathbb{R}, t \leq 0$ \newline
+	  Il est nécessaire de souligner que dans la définition de l'intégrale de Wiener l'opérateur intégrant doit être dans $L^2$, autrement dit : $\int_{\mathbb{R}} f_t(s)^2ds < \infty$, \newline Lorsque $H \neq \frac{1}{2}$, $s \rightarrow -\infty$, $f_t(s)$ tends vers $(-s)^{H-\frac{3}{2}} $, de carré intégrable, et pour $t \geq 0$ posons : 
+	  \[ X_t = \int_{\mathbb{R}} \left[ ((t-s)+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]dB_s \]
+	  On a : 
+	  \[ \mathbb{E}[X_t^2] = \int_{\mathbb{R}} \left[ ((t-s)+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]^2ds \]
+	  \[ = t^{2H}\int_{\mathbb{R}} \left[ ((1-u)^+)^{H-\frac{1}{2}} - ((-u)^+)^{H-\frac{1}{2}}              \right]^2du\]
+	  \[ = t^{2H}     \left(\int_{-\infty}^{0} [(1-u)^{H-\frac{1}{2}} - (-u)^{H-\frac{1}{2}}]^2du + \int_{0}^{1}(1-u)^{2H-1}du             \right)  \]
+	  \[ = C(H)^2t^{2H}\]
+	  On a aussi, pour : 
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = \int_{R} \left[  ((t-u)^+)^{H - \frac{1}{2}} - ((s-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = \int_{R} \left[  ((t-s-u)^+)^{H - \frac{1}{2}} - ((-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = C(H)^2\lvert t-s \rvert^{2H} \] \newline
+	  
+	  Malheureusement, comme nous allons le montrer par la suite, le mouvement brownien fractionnaire n'est pas une semi-martingale pour $H \neq \frac{1}{2}$, on ne peut donc pas lui appliquer toute la théorie d'Itô sur l'intégration stochastique des semi-martingales \newline
+	  Démontrons cette précédente affirmation : 
+	  Posons $p > 0$ : 
+	  
+	  \[ Y_{n, p} = n^{pH-1}\sum_{j=1}^n\lvert B_{j/n} - B_{(j-1)/n} \rvert  ^p \]
+	  Par la propriété d'auto-similarité du mouvement brownien fractionnaire, la suite $(Y_{n,p}, \;\; n \geq 1)$ a la même distribution que $(\tilde{Y}_{n,p}, n \geq 1)$, avec : 
+	  \[  \tilde{Y}_{n, p} = n^{-1}\sum_{j=1}^n \lvert B_j - B_{j-1} \rvert  ^p \]
+	  Par le théorème ergodique on sait que $\tilde{Y}_{n, p}$ converge presque sûrement vers $\mathbb{E}[\lvert B_1 \rvert ^p ]$ quand n tend vers l'infini, donc $Y_{n,p}$ converge en probabilité quand n tend vers l'infini vers $\mathbb{E}[\lvert B_1 \rvert ^p ]$, et on a donc : 
+	  \[  V_{n,p} = \sum_{j=1}^n\lvert B_{j/n} - B_{(j-1)/n} \rvert  ^p  \]
+	  Converge en probabilité vers 0 quand n tend vers l'infini si $pH < 1$, il est nécessaire de distinguer deux cas :
+	  \begin{itemize}
+		\item Si $H < \frac{1}{2}$, prenons $p > 2$ tel que $pH < 1$ ce qui a pour conséquence que la p-variation du mouvement brownien fractionnaire est infini, pour $p=2$ la variation quadratique est aussi finie.
+		\item Si $H > \frac{1}{2}$, on peut choisir p tel que $\frac{1}{H} < p < 2$, alors la p-variation vaut 0, et, en conséquence, la variation quadratique est aussi 0. \newline De plus, si on choisit p tel que $1 < p < \frac{1}{H}$, on déduit que la variation quadratique totale est infinie.
+	 \end{itemize}
+	 Ainsi, nous avons démontré que pour $H \ne \frac{1}{2}$ le mouvement brownien fractionnaire ne peut donc pas être une semi-martingale. \newline
+	 
+	  L'idée étant de comprendre les p-variations du mbf et de montrer qu'e
+	  
 	  Le comportement du mouvement brownien fractionnaire dépend donc de ce paramètre H : 
 	  \begin{itemize}
     		\item Lorsque $H < \frac{1}{2}$ les trajectoires sont assez irrégulières (comparativement au mouvement brownien standard).
@@ -134,8 +172,7 @@
     			\item Dans le cas où $H > \frac{1}{2}$ sous certaines conditions de régularité, on peut définir l'intégrale de Stieltjes.
    			\item Dans le cas où $H \in ]\frac{1}{4};\frac{1}{2}[$ on pourrait définir une notion de chemins rugueux pour définir des intégrales stochastiques fractionnaires.
 		\end{itemize}
-	\subsubsection{Chemins rugueux}
-	
+		
 	\subsubsection{Schéma numérique de Milstein}
 		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. \newline \newline
 		Le Schéma de Milstein est valable pour tout $H \in ]0;1[$, sa formule est donnée par :
@@ -435,7 +472,9 @@
    \section*{Conclusion}
    \addcontentsline{toc}{section}{Conclusion}
    
-   \appendix 
+   
+   \appendix
+   
    \section{L'approche de Carr et Madan}
    	Carr et Madan propose une approche intéressant afin d'utiliser la transformé de Fourier rapide pour évaluer le prix des options. \newline
 	En connaissant la fonction caractéristique, on peut, par des formules d'inversion de Fourier obtenir le prix d'un actif, notamment dans le cas que l'on évoquera ici, le prix d'un call en fonction de la fonction caractéristique. \newline
@@ -473,19 +512,104 @@
 	\[ C_T(k) = \frac{e^{-\alpha k}}{2\pi}\int_{-\infty}^{\infty} e^{-iuk}\Psi(u)du, \]
 	\[ = \frac{e^{-\alpha k}}{\pi}\int_{0}^{\infty}\Re[e^{-iuk} \Psi(u)]du \]
 	
-	En connaissant cela, on peut répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts.
+	En connaissant cela, on peut répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts (Continuum Call/Put).
 	
 	
-	
-	
-	
+
    
    \section{Code Python pour simulations et estimations}
-
-   \section{Preuves}
+   
+   
+   \includepdf[pages=1, pagecommand={\subsection{Code Python pour l'estimation du paramètre de Hurst H}}, scale=0.8, trim=0 2cm 0 2cm, clip]{EstimationParamH.pdf}
+   \includepdf[pages=2-, pagecommand={}, scale=0.8, trim=0 2cm 0 2cm, clip]{EstimationParamH.pdf}   
+  
+   \includepdf[pages=1, pagecommand={\subsection{Code Python pour les simulations du mouvement brownien fractionnaire et du processus d'Ornstein-Uhlenbeck}}, scale=0.8, trim=0 2cm 0 2cm, clip]{MBFetPOU.pdf}
+   \includepdf[pages=2-, pagecommand={}, scale=0.8, trim=0 2cm 0 2cm, clip]{MBFetPOU.pdf}
+   
+   \includepdf[pages=1, pagecommand={\subsection{Code Python pour les simulations du Modèle de Black-Scholes fractionnaire et du modèle Cox-Ingersoll-Ross}}, scale=0.8, trim=0 2cm 0 2cm, clip] {CIRetBS.pdf}
+   \includepdf[pages=2-, pagecommand={},  scale=0.8, trim=0 2cm 0 2cm, clip] {CIRetBS.pdf}
+   
   
    \section{Bibliographie}
+   \begin{thebibliography}{99}
 
+	\bibitem{FN}
+	{Mathieu Rosenbaum, Jim Gatheral, Thibault Jaisson} {\textbf{\em Volatility is rough }}
+	
+	\bibitem{F}
+	{Masaaki Fukasawa, Jim Gatheral} {\textbf{\em A rough SABR formula }}
+	
+	\bibitem{C}
+	{Mathieu Rosenbaum, Omar El Euch} {\textbf{\em The characteristic function of rough Heston Models}}
+	
+	\bibitem{Dab10}
+	{Elisa Alos, David Garcia-Lorite, Aitor Muguruza} {\textbf{\em On smile properties of volatility derivatives and exotic products: understanding the VIX skew}}
+	
+	\bibitem{FCM}
+	{Mathieu Rosenbaum, Paul Jusselin} {\textbf{\em No-arbitrage implies power-law market impact and rough volatility}}
+
+	\bibitem{V}
+	{Fabienne Comte, Eric Renault} {\textbf{\em LONG MEMORY IN CONTINUOUS-TIME STOCHASTIC VOLATILITY MODELS }}
+	
+	\bibitem{F}
+	{Gaël Didier} {\textbf{\em Application du mouvement Brownien fractionnaire à l’évaluation des engagements sur des contrats en unité de compte }}
+
+	\bibitem{C}
+	{Ton Dieker} {\textbf{\em Simulation of Fractional Brownian Motion}}
+
+	\bibitem{C}
+	{Jean-François Coeurjolly} {\textbf{\em Inférence statistique pour les mouvements browniens fractionnaires et multifractonnaires}}	
+		
+	\bibitem{C}
+	{Christian Bender} {\textbf{\em An Itô formula for generalized functionals of a fractional Brownian motion with arbitrary Hurst parameter}}	
+
+	\bibitem{C}
+	{Mathieu Rosenbaum} {\textbf{\em Rough Heston models : Pricing and hedging}}	
+	
+	\bibitem{C}
+	{Peter Carr, Dilip B.Madan} {\textbf{\em Option Valuation using the fast Fourier Transform}}	
+	
+	\bibitem{C}
+	{Omar El Euch} {\textbf{\em Quantitative Finance Under Rough Volatility}}	
+	
+	\bibitem{C}
+	{David Nualart} {\textbf{\em The Malliavin Calculus And Related Topics}}	
+	
+	\bibitem{C}
+	{Mathieu Rosenbaum, Omar El Euch} {\textbf{\em Perfect hedging in rough Heston models}}	
+	
+	\bibitem{C}
+	{Elisa Alos, Kenichiro Shiraya} {\textbf{\em Estimating the Hurst parameter from short term volatility swaps: a Malliavin calculus approach }}	
+	
+	\bibitem{C}
+	{Fabrice Douglas Rouah} {\textbf{\em The SABR model}}	
+	
+	\bibitem{C}
+	{Gazanfer Unal, Ali Dinler} {\textbf{\em Exact linearization of one dimensional Itô equations driven by fBm: Analytical and numerical solutions}}	
+	
+	\bibitem{C}
+	{Sami El Rahouli } {\textbf{\em Financial modeling with Volterra processes and applications to options, interest rates and credit risk }}	
+	
+	\bibitem{C}
+	{Marc M. Mpanda, Safari Mukeru, Mmboniseni Mulaudzi} {\textbf{\em Generalisation of Fractional Cox-Ingersoll-Ross Process }}	
+	
+	\bibitem{C}
+	{Yuliya Mishura, Anton Yurchenko-Tytarenko} {\textbf{\em Fractional Cox–Ingersoll–Ross process with non-zero «mean» }}	
+	
+	\bibitem{C}
+	{David Nualart, Samy Tindel} {\textbf{\em A CONSTRUCTION OF THE ROUGH PATH ABOVE FRACTIONAL BROWNIAN MOTION USING VOLTERRA’S REPRESENTATION}}	
+	
+	\bibitem{C}
+	{Christian Bayer, Peter Friz, Jim Gatheral} {\textbf{\em Pricing under rough volatility}}	
+	
+	\bibitem{C}
+	{Mathieu Garcin} {\textbf{\em Hurst exponents and delampertized fractional Brownian motions}}	
+	
+	\bibitem{C}
+	{Eyal Neuman, Mathieu Rosenbaum} {\textbf{\em Fractional Brownian motion with zero Hurst parameter: a rough volatility viewpoint }}	
+
+
+   
 
 
 \end{document}
