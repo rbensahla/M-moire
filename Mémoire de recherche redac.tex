@@ -422,9 +422,11 @@
 					\[ \sigma_B(K,f) = \frac{\alpha \left( 1+ \left[  \frac{(1-\beta)^2}{24} \frac{\alpha^2}{(fK)^{(1-\beta}} + \frac{1}{4}\frac{\rho \beta v \alpha}{(fK)^{(1-\beta)/2}}   + \frac{2-3\rho^2}{24}v^2    \right]T      \right)}{(fK)^{(1-\beta)/2} \left[1+\frac{(1-\beta)^2}{24}ln^2 \frac{f}{K} + \frac{(1-\beta)^4}{1920}ln^4 \frac{f}{K}   \right]} \frac{z}{\chi(z)}\] 					\newline
 					Avec : 
 					\[ z = \frac{v}{\alpha}(fK)^{(1-\beta)/2}ln \frac{f}{K} \] \newline
-					\[ \chi(z) = ln \left[  \frac{\sqrt{1-2\rho z+ z^2}+z - \rho}{1 - \rho}  \right]  \] \newpage
+					\[ \chi(z) = ln \left[  \frac{\sqrt{1-2\rho z+ z^2}+z - \rho}{1 - \rho}  \right]  \]
 				\subsubsection{Le modèle SABR dirigé par un mouvement brownien fractionnaire}	
 					
+			\subsection{Le modèle RFSV}
+				
 					
 										
 					
@@ -434,10 +436,53 @@
    \addcontentsline{toc}{section}{Conclusion}
    
    \appendix 
+   \section{L'approche de Carr et Madan}
+   	Carr et Madan propose une approche intéressant afin d'utiliser la transformé de Fourier rapide pour évaluer le prix des options. \newline
+	En connaissant la fonction caractéristique, on peut, par des formules d'inversion de Fourier obtenir le prix d'un actif, notamment dans le cas que l'on évoquera ici, le prix d'un call en fonction de la fonction caractéristique. \newline
+	L'idée étant que l'on connaît souvent la fonction caractéristique dans certains modèles, comme le modèle de Heston.
+	\[ C_T(k) = e^{-rT} \mathbb{E}^\mathbb{Q}[(S_T - L)^+] \]
+	\[ = e^{-rT}\int_{k}^{\infty} (e^x - e^k)q(x)dx \]
+	On ne peut pas exprimer le Call en utilisant le log-strike car $C(k)$ tends vers $S_0$ quand $k \rightarrow -\infty$
+	On a donc : 
+	\[ C_T(k) = e^{-rT}\int_{-\infty}^{\infty}(e^x - e^{-\infty})q(x)dx, \]
+	\[ = e^{-rT}\int_{-\infty}^{\infty}e^x q(x)dx, \]
+	\[ = e^{-rT}\mathbb{E}^\mathbb{Q}[e^x] \]
+	
+	On en déduit, en utilisant la propriété des martingales $\mathbb{E}^{\mathbb{Q}[S_T]} = S_0e^{rT}$ on s'aperçoit que $lim_{k\rightarrow -\infty} C(k) = S_0$ ne converge pas vers 0.
+	Cependant, $C(k)$ n'est pas $L^1$, une transformation de Fourier n'existe pas, cependant en introduisant un facteur exponentielle $e^{\alpha k}$ avec $\alpha > 0$, il est possible C(k) une fonction intégrable.
+	\[ c_T(k) = e^{\alpha k}C_T(k), \]
+	$c_T(k)$ est une fonction intégrable, car $\int_{-\infty}^{\infty} \lvert e^{\alpha k}C_T(k) \rvert dk < \infty $, est bien fini, pour $\alpha$ déterminé de manière optimale.
+	La transformée de Fourier de $c(k)$ est donnée par :
+	\[ \Psi(u) = \int_{-\infty}^{\infty} e^{iuk}c(k)dk, \]
+	\[ = \int_{-\infty}^{\infty} e^{iuk} \int_{-\infty}^{\infty}e^{\alpha k}e^{rT}(e^x - e^k)^+q(x)dxdk, \]
+	\[ = \int_{-\infty}^{\infty} e^{iuk} \int_{k}^{\infty}e^{\alpha k} e^{-rT}(e^x-e^k)q(x)dxdk, \]
+	\[ = \int_{-\infty}^{\infty} e^{-rT}q(x) \left(\int_{-\infty}^{x}(e^x - e^k)e^{iuk}e^{\alpha k} dk \right)dx  \]	
+	
+	L'intégrale interne représente le payoff vaut :
+	
+	\[ \int_{-\infty}^{\infty} (e^x - e^k)e^{iuk}e^{\alpha k}dk = e^x \int_{-\infty}^{x}e^{(\alpha +iu)k}dk -\int_{-\infty}^{x}e^({\alpha + iu + 1)k}dk, \]
+	\[ = \frac{e^x}{\alpha + iu}[ e^{(\alpha + iu)k} ]^x_{-\infty} - \frac{1}{\alpha + iu + 1}[e^{(\alpha + iu + 1)k}]^x_{-\infty} \]
+	En prenant la limite pour $lim_{k \rightarrow -\infty} e^{(\alpha + iu)k} = 0$ avec $\alpha > 0$ on a :
+	\[  \left(   \frac{e^{(\alpha+1+iu}x}{\alpha + iu} - \frac{e^{(\alpha+1+iu}x}{\alpha + iu + 1}        \right)  \]
+	Ce qui nous amène :
+	\[ \Psi(u) = \int_{-\infty}^{\infty}e^{-rT}q(x)  \left(   \frac{e^{(\alpha+1+iu}x}{\alpha + iu} - \frac{e^{(\alpha+1+iu}x}{\alpha + iu + 1}        \right)dx, \]
+	\[ = e^{-rT}\int_{-\infty}^{\infty} q(x) \frac{e^{(\alpha + 1 + iu)x}}{(\alpha+iu)(\alpha+1+iu)}dx. \]
+	En prenant la transformé de Fourier pour : $\int_{-\infty}^{\infty}q(x)e^{(\alpha + 1 +iu)x} = \int_{-\infty}^{\infty}q(x)e^{i(u-(\alpha+1))x}$ on a la fonction caractéristique pour le prix sous la probabilité risque neutre $\phi_T(u-(\alpha+1)i)$ finalement on a :
+	\[ \Psi(u) = \frac{e^{-rT} \phi_T(u-(\alpha+1)i)  }{ \alpha^2 + \alpha -u^2 + i(2\alpha + 1)u^\prime  } \]
+	On a donc : 
+	\[ C_T(k) = \frac{e^{-\alpha k}}{2\pi}\int_{-\infty}^{\infty} e^{-iuk}\Psi(u)du, \]
+	\[ = \frac{e^{-\alpha k}}{\pi}\int_{0}^{\infty}\Re[e^{-iuk} \Psi(u)]du \]
+	
+	En connaissant cela, on peut répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts.
+	
+	
+	
+	
+	
+   
    \section{Code Python pour simulations et estimations}
 
    \section{Preuves}
-
   
    \section{Bibliographie}
 
