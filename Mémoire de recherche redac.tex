@@ -9,7 +9,8 @@
 \usepackage{xr}
 \usepackage{biblatex}
 \usepackage{pdfpages}
-
+\usepackage{float}
+\usepackage{perpage}
 
 
 \date{September 23, 2021}
@@ -42,7 +43,7 @@
       
       \subsection{Le mouvement brownien fractionnaire}
       	\subsubsection{Définition du mouvement brownien fractionnaire}
-     	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B_H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  sa fonction de covariance $\Gamma(t,s)$ : \[  \Gamma(t,s) = \mathbb{E} [B^H(s)B^H(t)] = \frac{C(H)}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
+     	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B^H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  sa fonction de covariance $\Gamma(t,s)$ : \[  \Gamma(t,s) = \mathbb{E} [B^H(s)B^H(t)] = \frac{C(H)}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
 	  Sa fonction d'auto-covariance $\gamma(t,s)$ est donnée par : 
 	  \[  \gamma(t,s) =  \frac{C(H)}{2}(\lvert t-s-1 \rvert^{2H}  -   2\lvert t-s \rvert^{2H}      +     \lvert t-s+1 \rvert^{2H}))  \]
 	  où \[ C(H) = Var[B^H(1)]\] 
@@ -51,25 +52,27 @@
 	  
 	\subsubsection{Représentation de Mandelbrot-Van-Ness}
      	  Une autre forme de représentation du mouvement brownien fractionnaire est celle de Mandelbrot-Van-Ness, aussi appelé moving-average representation, celle-ci est donnée par :
-	  \[ B^H(t) := \frac{1}{C(H)}\int_{\mathbb{R}} [ (t-s)_+^{H-\frac{1}{2}}-(-s)_+^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
+	  \[ B^H(t) := \frac{1}{C(H)}\int_{\mathbb{R}} [ ((t-s)^+)^{H-\frac{1}{2}}-((-s)^+)^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
 	  Avec : $C(H) = \left(  \int_{0}^{\infty} \left((1+s)^{H-\frac{1}{2}} - s^{H - \frac{1}{2}} \right)^2ds + \frac{1}{2H}      \right)^{\frac{1}{2}}$
 	  
 	  Nous allons démontrer ce théorème : \newline
-	  On définit $f_t(s) = ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}, \;\;\; s \in \mathbb{R}, t \leq 0$ \newline
+	  On définit $f_t(s) = ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}, \;\;\; s \in \mathbb{R}, t \geq 0$ \newline
 	  Il est nécessaire de souligner que dans la définition de l'intégrale de Wiener l'opérateur intégrant doit être dans $L^2$, autrement dit : $\int_{\mathbb{R}} f_t(s)^2ds < \infty$, \newline Lorsque $H \neq \frac{1}{2}$, $s \rightarrow -\infty$, $f_t(s)$ tends vers $(-s)^{H-\frac{3}{2}} $, de carré intégrable, et pour $t \geq 0$ posons : 
-	  \[ X_t = \int_{\mathbb{R}} \left[ ((t-s)+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]dB_s \]
-	  On a : 
-	  \[ \mathbb{E}[X_t^2] = \int_{\mathbb{R}} \left[ ((t-s)+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]^2ds \]
+	  \[ X_t = \int_{\mathbb{R}} \left[ ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]dB_s \]
+	  On a par l'isométrie d'Itô : 
+	  \[ \mathbb{E}[X_t^2] = \int_{\mathbb{R}} \left[ ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]^2ds \]
+	  Pour $t > 0$, le résultat étant trivial pour $t = 0$, en factorisant par $t$, on a : 
 	  \[ = t^{2H}\int_{\mathbb{R}} \left[ ((1-u)^+)^{H-\frac{1}{2}} - ((-u)^+)^{H-\frac{1}{2}}              \right]^2du\]
+	  On décompose l'intégrale sur $\mathbb{R}^-$ et sur $\mathbb{R}^+$, on a :
 	  \[ = t^{2H}     \left(\int_{-\infty}^{0} [(1-u)^{H-\frac{1}{2}} - (-u)^{H-\frac{1}{2}}]^2du + \int_{0}^{1}(1-u)^{2H-1}du             \right)  \]
 	  \[ = C(H)^2t^{2H}\]
-	  On a aussi, pour : 
-	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = \int_{R} \left[  ((t-u)^+)^{H - \frac{1}{2}} - ((s-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
-	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = \int_{R} \left[  ((t-s-u)^+)^{H - \frac{1}{2}} - ((-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
-	  \[ \mathbb{E}[\vert X_t - X_s \rvert] = C(H)^2\lvert t-s \rvert^{2H} \] \newline
+	  On a aussi, pour $s < t$ : 
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert^2] = \int_{\mathbb{R}} \left[  ((t-u)^+)^{H - \frac{1}{2}} - ((s-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert^2] = \int_{\mathbb{R}} \left[  ((t-s-u)^+)^{H - \frac{1}{2}} - ((-u)^+)^{H - \frac{1}{2}}    \right]^2du \]
+	  \[ \mathbb{E}[\vert X_t - X_s \rvert^2] = C(H)^2\lvert t-s \rvert^{2H} \] \newline
 	  
 	  Malheureusement, comme nous allons le montrer par la suite, le mouvement brownien fractionnaire n'est pas une semi-martingale pour $H \neq \frac{1}{2}$, on ne peut donc pas lui appliquer toute la théorie d'Itô sur l'intégration stochastique des semi-martingales \newline
-	  Démontrons cette précédente affirmation : 
+	  Démontrons cette précédente affirmation, l'idée étant de montrer que si le mouvement brownien fractionnaire est une semi-martingale alors la variation quadratique doit être finie. : 
 	  Posons $p > 0$ : 
 	  
 	  \[ Y_{n, p} = n^{pH-1}\sum_{j=1}^n\lvert B_{j/n} - B_{(j-1)/n} \rvert  ^p \]
@@ -83,8 +86,6 @@
 		\item Si $H > \frac{1}{2}$, on peut choisir p tel que $\frac{1}{H} < p < 2$, alors la p-variation vaut 0, et, en conséquence, la variation quadratique est aussi 0. \newline De plus, si on choisit p tel que $1 < p < \frac{1}{H}$, on déduit que la variation quadratique totale est infinie.
 	 \end{itemize}
 	 Ainsi, nous avons démontré que pour $H \ne \frac{1}{2}$ le mouvement brownien fractionnaire ne peut donc pas être une semi-martingale. \newline
-	 
-	  L'idée étant de comprendre les p-variations du mbf et de montrer qu'e
 	  
 	  Le comportement du mouvement brownien fractionnaire dépend donc de ce paramètre H : 
 	  \begin{itemize}
@@ -144,7 +145,7 @@
 	\end{figure}\newpage
 	Enfin il s'agit d'étudier le comportement de $\zeta_q$ en fonction de $q$, nos résultats nous montrent qu'il existe donc une relation linéaire entre $\zeta_q$ et $q$, de ce résultat est déduit la pente la droite qui correspond donc au paramètre H (cf Figure 3), et on déduit donc la relation d'échelle monofractal suivante :  \[  \zeta_q = qH \]
 	Il convient de remarquer que H varie très peu en fonction du temps.
-	\begin{figure}[!h]
+	\begin{figure}[H]
   		\includegraphics[width=\linewidth, height=80mm]{RelationH.png}
   		\caption{Relation entre $\zeta_q$ et $q$}
  		\label{fig:}
@@ -152,10 +153,20 @@
 
 	\subsubsection{Application et estimation du paramètre de Hurst H sur d'autres indices}
 	On applique la même méthode sur différentes volatilités de différents indices, les résultats sont les suivants : 
-	\begin{figure}[!h]
+	
+	\begin{figure}[H]
   		\includegraphics[width=\linewidth, height=150mm]{EstimationHetNuIndices.png}
   		\caption{Estimation du paramètre H de différents indices}
- 		\label{fig:}
+ 		\label{fig:FigA}
+	\end{figure}
+	
+	On remarque que le paramètre H varie entre 0.071 et 0.149, de plus on remarque que la variation de l'estimation du paramètre H depuis la simulation effectuée par Rosenbaum et Gatheral (En Mai 2016, cf Figure 5) n'a que très peu variée, ce qui confirme l'affirmation de la constance du paramètre H dans le temps.
+	Enfin, cela permet aux praticiens d'éviter à estimer H souvent et contrairement à d'autres problématiques qui nécessitent de réajuster le calibrage tous les jours (Par exemple la calibrage de la volatility smile).
+	
+	\begin{figure}[!h]
+  		\includegraphics[width=\linewidth, height=150mm]{SimRosenbaum.png}
+  		\caption{Estimation du paramètre H de différents indices, en Mai 2016, par Gatheral et Rosenbaum}
+ 		\label{fig:FigB}
 	\end{figure}
 	
    \subsection{Équations Différentielles Stochastiques dirigées par un mBF}
@@ -192,9 +203,9 @@
 		\subsubsection{Linéarisation d'équations différentielles stochastiques unidimensionnelle}
 			Pour pouvoir avancer dans la suite de notre étude (pour pouvoir donner une solution exacte du Processus d'Ornstein-Uhlenbeck fractionnaire) nous avons besoin d'introduire, suivant la présentation de [UD07], une méthode de construction de solutions théoriques. \newline
 			\paragraph{Théorème 1} Posons : 
-			\[ dx = f(x,t)dt + g(x,t)dB^H(t)  \tag{1} \] 
-			Où $x(0) = x_0, t \geq 0, H \in (0,1)$ et $dB^H(t)$ l'incrément du mouvement brownien fractionnaire $B^H(t)$ , avec f et g, deux fonctions supposées assez régulières, l'équation (1) peut s'écrire sous la forme linéaire suivante : 
-			\[ dy = (a(t)y + b(t)dt)dt + (c(t)y + e(t))dB^H(t) \tag{2} \] 
+			\[ dX_t = f(X_t,t)dt + g(X_t,t)dB_t^H  \tag{1} \] 
+			Où $X_0 = x_0, t \geq 0, H \in (0,1)$ et $dB_t^H$ l'incrément du mouvement brownien fractionnaire $B^H_t$ , avec f et g, deux fonctions supposées assez régulières, l'équation (1) peut s'écrire sous la forme linéaire suivante : 
+			\[ dY_t = (a(t)Y_t + b(t))dt + (c(t)Y_t + e(t))dB^H_t \tag{2} \] 
 			Via la transformation inverse $y=h(x,t)$ avec sa dérivée partielle par rapport à $x$ non-nulle si et seulement si on a :
 			\[ \frac{\partial}{\partial x}\left(\frac{\frac{\partial}{\partial x}(g(x, t)) \frac{\partial}{\partial x}(g(x,t)L)}{\frac{\partial}{\partial x}(g(x, t)L)}\right) = 0  \] 
 			Avec $L = \frac{\partial}{\partial x}\left(\frac{1}{g}\right) +  \frac{\partial}{\partial x} \left(\frac{f}{g} - Ht^{2H - 1} \frac{\partial g}{\partial x}\right) $ \newline
@@ -203,7 +214,7 @@
     				\item Si c(t) = 0 alors on a :
 					\[ h(x,t) = \left(    \int \alpha(t)dt    \right)^{-1}    \left(    \int \frac{1}{g(x,t)}dx   \right) \] 	
 					La condition $\frac{\partial}{\partial x}\left(\frac{\frac{\partial}{\partial x}(g(x, t)) \frac{\partial}{\partial x}(g(x,t)L)}{\frac{\partial}{\partial x}(g(x, t)L)}\right) = 0$ est bien respectée et l'équation différentielle stochastique linéaire s'écrit donc : 
-					\[ dy = \beta(t)e(t)dt + e(t)dB^H\] \newline
+					\[ dY_t = \beta(t)e(t)dt + e(t)dB^H_t\] \newline
 					avec $e(t) = \left(    \int \alpha(t)dt    \right)^{-1}$, $\alpha$ et $\beta$ sont définies par identification dans l'égalité : 
 					\[ \alpha(t)y + \beta(t) = \int \frac{\partial}{\partial t} \left( \frac{1}{g}\right) + \frac{f}{g} - Ht^{2H-1} \frac{\partial g}{\partial x} \] 
 					
@@ -213,21 +224,21 @@
 			\end{itemize}
 			Nous avons maintenant une forme linéaire de notre équation, il faut maintenant la résoudre en utilisant la méthode du facteur intégrant, définit comme suit : 
 			\paragraph{Définition 1}
-				La fonction $F=F(t, B^H)$ vérifiant $d(Fy) = D_1(t,B^H)dt + D_2(t,B^H)dB^H$ est un facteur intégrant pour des équations différentielles stochastiques linéaires unidimensionnelles, on peut donc écrire : 
-				\[ F(t, W^H) = exp \left(- \int_{}^{t} c(s)dB^H(s) + H \int_{}^{t}s^{2H - 1}c^2(s)ds - \int_{}^{t} a(s)ds \right) \] 
+				La fonction $F=F(t, B^H_t)$ vérifiant $d(Fy) = D_1(t,B^H_t)dt + D_2(t,B^H_t)dB^H_t$ est un facteur intégrant pour des équations différentielles stochastiques linéaires unidimensionnelles, on peut donc écrire : 
+				\[ F(t, B^H_t) = exp \left(- \int_{}^{t} c(s)dB^H_s + H \int_{}^{t}s^{2H - 1}c^2(s)ds - \int_{}^{t} a(s)ds \right) \] 
 				Par suite, on a donc la solution de l'équation différentielle stochastique linéaire suivante :
-				\[ y(t) = \frac{1}{F}\left( \int_{}^{t} F(s)b(s)ds - 2H \int_{}^{s} s^{2H-1}F(s)c(s)e(s)ds + \int_{}^{t}F(s)e(s)dB^H(s)+y_0 \right) \] 
+				\[ Y_t = \frac{1}{F}\left( \int_{}^{t} F(s)b(s)ds - 2H \int_{}^{t} s^{2H-1}F(s)c(s)e(s)ds + \int_{}^{t}F(s)e(s)dB^H_s+y_0 \right) \] 
 				
 		\subsubsection{Présentation du processus d'Ornstein-Uhlenbeck fractionnaire}
 			Le processus de Ornstein-Ulhenbeck associé au mouvement brownien fractionnaire associé est donné par l'équation suivante : 
-      	 		\[ dx = \theta(t)(\mu (t)(t)-x)dt + \sigma (t) dB^H_t\] 
+      	 		\[ dX_t = \theta(t)(\mu (t)-X_t)dt + \sigma (t) dB^H_t\] 
 			Ce processus est souvent utilisé pour modéliser des taux en finance.
 			
 		
 		\subsubsection{Solution théorique excacte}
 		Pour donner une solution théorique exacte on utilise la méthode du facteur intégrant précédemment introduit (cf section 1.6.1) dont l'expression est la suivante : $F(t) = e^{\int_{}^{t}\theta(s)ds}$ \newline
 		On a donc la solution suivante :
-		\[ y(t) = e^{\int_{}^{t} \theta(s)ds}\left(  \int_{}^{t} e^{\int \theta(s)ds} \theta(s)\mu(s)ds + \int_{}^{t} e^{\int \theta(s)ds} \sigma(s)dB^H(s) +y_0 \right) \tag{3}\] \newline
+		\[ Y_t = e^{\int_{}^{t} \theta(s)ds}\left(  \int_{}^{t} e^{\int \theta(s)ds} \theta(s)\mu(s)ds + \int_{}^{t} e^{\int \theta(s)ds} \sigma(s)dB^H_s +y_0 \right) \tag{3}\] \newline
 		 Il s'agit maintenant de donner une solution numérique à (3). 
 		Pour cela, on utilise le schéma de Milstein et on a donc, pour le paramètre de Hurst H quelconque : 
 		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta t + \sigma \Delta B_j^H \] 
@@ -245,8 +256,8 @@
 		
 		\subsubsection{Modèle de Cox-Ingersoll-Ross fractionnaire}
 			Le modèle CIR dirigé par un mouvement brownien fractionnaire est défini par la dynamique suivante : 
-			\[ dx = \gamma(t)(\theta(t)-x)dt + \sigma(t)\sqrt{x}dB^H(t) \]
-			Ce modèle est utilisé afin de modéliser l'évolution de taux d'intérêts \newline
+			\[ dX_t = \gamma(t)(\theta(t)-X_t)dt + \sigma(t)\sqrt{x}dB^H_t \]
+			Ce modèle est utilisé afin de modéliser l'évolution de taux d'intérêts. \newline
 			On a : $f(x,t) = \gamma(t)(\theta(t)-x)$, $g(x,t) = \sigma(t)\sqrt{x}$. On a donc $L = \frac{1}{2} \frac{\sigma(t)}{\sqrt{x}} + \frac{\sigma(t)}{\sigma(t)} \frac{-1}{2}x^{-\frac{3}{2}}\theta(t) - \frac{1}{2}x^{-\frac{1}{2}} -Ht^{2H-1}\frac{-\sigma(t)}{4}x^{-\frac{3}{2}}$ \newline \newline
 			Puis on a : $\frac{\partial}{\partial x} g(x,t)L = x^{-2}(\frac{1}{2}\gamma(t)\theta(t) -  \frac{\sigma(t)^2}{4} Ht^{2H-1}$ \newline \newline
 			On remarque que pour $\sigma(t) = \sqrt{\frac{2\gamma(t)\theta(t)}{Ht^{2H-1}}},$ $\frac{\partial}{\partial x} g(x,t)L$ s'annule et donc d'après la méthode décrite dans 1.6.1 on peut écrire l'équation différentielle stochastique sous forme linéaire.
@@ -255,17 +266,17 @@
 			On a donc : 
 			\[ \alpha(t)y+\beta(t) = x^\frac{1}{2}(-\frac{\gamma(t)}{\sigma(t)} + 2  \frac{\partial}{\partial t}\frac{1}{\sigma(t)})  \]
 			Or $\beta(t)$ vaut 0 on a donc :
-			\[ (\int \alpha(t)dt)^\prime + (\frac{\gamma(t)}{2} + \sigma(t) \frac{\partial}{\partial t}\frac{1}{\sigma(t)}) \int \alpha(t)dt  = 0 \]
+			\[ \left((\int \alpha(t)dt)^\prime + (\frac{\gamma(t)}{2} + \sigma(t) \frac{\partial}{\partial t}\frac{1}{\sigma(t)} \right) \int \alpha(t)dt  = 0 \]
 			On peut donc égaliser : 
 			\[ \int \alpha(t)dt = e^{-\int \frac{\gamma(t)}{2}dt } \sigma(t)^{-1}\]	
 			On obtient finalement : 
 			\[ y = 2e^{\int \frac{\gamma(t)}{2}dt}\sqrt{x} \]
 			On peut donc écrire l'équation différentielle stochastique linéaire : 
-			\[ dy = e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H(t) \]			
+			\[ dY_t = e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H_t \]			
 			On obtient la solution en intégrant :
-			\[ y(t) = \int_{0}^{t}e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H(t) + K \] \newline
+			\[ Y_t = \int_{0}^{t}e^{\int \frac{\gamma(t)}{2}}\sigma(t)dB^H_t + K \] \newline
 			Enfin, on obtient donc la solution du modèle CIR : 
-			\[ x(t) = \left(\frac{1}{2}exp\left(-\int \frac{1}{2} \gamma(t)dt \right) \left(\int_{0}^{t}exp\left(\int \frac{1}{2}\gamma(t)dt \right) \sigma(t)dB^H(t) + \sqrt{x(0)} \right) \right)^2  \]
+			\[ X_t = \left(\frac{1}{2}exp\left(-\int \frac{1}{2} \gamma(t)dt \right) \left(\int_{0}^{t}exp\left(\int \frac{1}{2}\gamma(t)dt \right) \sigma(t)dB^H_t + \sqrt{x(0)} \right) \right)^2  \]
 			On utilise maintenant un schéma numérique de Milstein afin de donner une solution numérique de l'expression plus haut, on a donc : 
 			\[ X_{j+1} = X_j + (\gamma(\theta-X_j) - \frac{1}{2}H\sigma^2t_j^{2H-1})\Delta t + \sigma\sqrt{(X_j)} \Delta B_j^H + \frac{1}{4}\sigma^2(\Delta B^H_j)^2\]
 			
@@ -478,16 +489,23 @@
    \section{L'approche de Carr et Madan}
    	Carr et Madan propose une approche intéressant afin d'utiliser la transformé de Fourier rapide pour évaluer le prix des options. \newline
 	En connaissant la fonction caractéristique, on peut, par des formules d'inversion de Fourier obtenir le prix d'un actif, notamment dans le cas que l'on évoquera ici, le prix d'un call en fonction de la fonction caractéristique. \newline
-	L'idée étant que l'on connaît souvent la fonction caractéristique dans certains modèles, comme le modèle de Heston.
-	\[ C_T(k) = e^{-rT} \mathbb{E}^\mathbb{Q}[(S_T - L)^+] \]
-	\[ = e^{-rT}\int_{k}^{\infty} (e^x - e^k)q(x)dx \]
+	L'idée étant que l'on connaît souvent la fonction caractéristique dans certains modèles, comme le modèle de Heston.\newline
+	Si on connait la densité du processus $S_t$ on peut utiliser la formule de transfert pour calculer le prix du Call, ici $L=e^k$ et donc :
+	\begin{align}
+		C_T(k) &= e^{-rT} \mathbb{E}^\mathbb{Q}[(S_T - L)^+] \\
+		&= e^{-rT}\int_{k}^{\infty} (e^x - e^k)q(x)dx
+	\end{align}
+	
 	On ne peut pas exprimer le Call en utilisant le log-strike car $C(k)$ tends vers $S_0$ quand $k \rightarrow -\infty$
 	On a donc : 
-	\[ C_T(k) = e^{-rT}\int_{-\infty}^{\infty}(e^x - e^{-\infty})q(x)dx, \]
-	\[ = e^{-rT}\int_{-\infty}^{\infty}e^x q(x)dx, \]
-	\[ = e^{-rT}\mathbb{E}^\mathbb{Q}[e^x] \]
 	
-	On en déduit, en utilisant la propriété des martingales $\mathbb{E}^{\mathbb{Q}[S_T]} = S_0e^{rT}$ on s'aperçoit que $lim_{k\rightarrow -\infty} C(k) = S_0$ ne converge pas vers 0.
+	\begin{align}
+		C_T(k) & = e^{-rT}\int_{-\infty}^{\infty}(e^x - e^{-\infty})q(x)dx, \\
+		&= e^{-rT}\int_{-\infty}^{\infty}e^x q(x)dx, \\
+		&= e^{-rT}\mathbb{E}^\mathbb{Q}[e^{S_t}]
+	\end{align}
+	
+	On en déduit, en utilisant la propriété des martingales $\mathbb{E}^{\mathbb{Q}}[S_T] = S_0e^{rT}$ on s'aperçoit que $lim_{k\rightarrow -\infty} C(k) = S_0$ ne converge pas vers 0.
 	Cependant, $C(k)$ n'est pas $L^1$, une transformation de Fourier n'existe pas, cependant en introduisant un facteur exponentielle $e^{\alpha k}$ avec $\alpha > 0$, il est possible C(k) une fonction intégrable.
 	\[ c_T(k) = e^{\alpha k}C_T(k), \]
 	$c_T(k)$ est une fonction intégrable, car $\int_{-\infty}^{\infty} \lvert e^{\alpha k}C_T(k) \rvert dk < \infty $, est bien fini, pour $\alpha$ déterminé de manière optimale.
@@ -512,14 +530,15 @@
 	\[ C_T(k) = \frac{e^{-\alpha k}}{2\pi}\int_{-\infty}^{\infty} e^{-iuk}\Psi(u)du, \]
 	\[ = \frac{e^{-\alpha k}}{\pi}\int_{0}^{\infty}\Re[e^{-iuk} \Psi(u)]du \]
 	
-	En connaissant cela, on peut répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts (Continuum Call/Put).
-	
-	
+	On peut en déduire une formule similaire pour le put, on peut donc répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts (Continuum Calls/Puts).
+	On écrit donc : 
+	\[ f(S_T) = f(\kappa) + f^\prime(\kappa)(S-\kappa) +  \int_{-\infty}^{\kappa}f^{\prime\prime}(K)(K-S)^+dK + \int_{\kappa}^{\infty}f^{\prime\prime}(K)(S-K)^+ dK\]
+	Elle est parfois utilisée pour le pricing variance swap sur l'indice VIX.
 
    
    \section{Code Python pour simulations et estimations}
    
-   
+
    \includepdf[pages=1, pagecommand={\subsection{Code Python pour l'estimation du paramètre de Hurst H}}, scale=0.8, trim=0 2cm 0 2cm, clip]{EstimationParamH.pdf}
    \includepdf[pages=2-, pagecommand={}, scale=0.8, trim=0 2cm 0 2cm, clip]{EstimationParamH.pdf}   
   
@@ -606,10 +625,11 @@
 	{Mathieu Garcin} {\textbf{\em Hurst exponents and delampertized fractional Brownian motions}}	
 	
 	\bibitem{C}
-	{Eyal Neuman, Mathieu Rosenbaum} {\textbf{\em Fractional Brownian motion with zero Hurst parameter: a rough volatility viewpoint }}	
-
-
-   
-
+	{Eyal Neuman, Mathieu Rosenbaum} {\textbf{\em Fractional Brownian motion with zero Hurst parameter: a rough volatility viewpoint }}
+	
+	\bibitem{C}
+	{Martin Schmelze} {\textbf{\em Option Pricing Formulae using Fourier Transform: Theory and Application }}
+	
+	
 
 \end{document}
