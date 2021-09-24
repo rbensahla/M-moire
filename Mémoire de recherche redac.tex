@@ -376,10 +376,12 @@
 				Avec $\langle dW_t, dB_t \rangle = \rho dt,  \;\;\; \alpha \in (1/2, 1).$
 				
 				\subsubsection{Démonstration de la loi du couple ($S_t^{t_0}, V_t^{t_0}$) conditionnellement à $F_t$ }
-				Comme l'on démontré El Euch et Rosenbaum, il est nécessaire d'utiliser le théorème de Fubini stochastique, l'objectif est de montrer que $I^{1-\alpha}V	$ est une semi-martingale pour $t > 0$, posons : 
-				\[  (I^{1-\alpha}V)_t = V_0\int_{0}^{t}\frac{s^{-\alpha}}{\Gamma(1-\alpha}ds + \int_{0}^{t} \lambda(\theta^0(s) - V_s)ds + \int_{0}^{t}\nu\sqrt{V_s}dB_s \]
+				Comme l'on démontré El Euch et Rosenbaum, il est nécessaire d'utiliser le théorème de Fubini stochastique, grâce à ce dernier on obtient que $I^{1-\alpha}V$ est une semi-martingale pour $t > 0$, en effet :
+				\[ (I^{1-\alpha}V)_t  =  \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t}\frac{V_s}{(t-s)^{\alpha}}ds \]
+				On remplace $V_t$ par son expression donnée ci-dessus, et on utilise le théorème de Fubini stochastique et on en déduit que : 
+				\[  (I^{1-\alpha}V)_t = V_0\int_{0}^{t}\frac{s^{-\alpha}}{\Gamma(1-\alpha)}ds + \int_{0}^{t} \lambda(\theta^0(s) - V_s)ds + \int_{0}^{t}\nu\sqrt{V_s}dB_s \]
 				On a donc : 
-				\[ \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t+t_0}(t+t_0 - u)^{-\alpha} V_udu \]
+				\[ (I^{1-\alpha}V)_{t+t_0} = \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t+t_0}(t+t_0 - u)^{-\alpha} V_udu \]
 				qui vaut :
 				\[ \frac{1}{\Gamma(1-\alpha)}\int_{0}^{t_0}(t_0-u)^{-\alpha} V_udu + V_0 \int_{t_0}^{t+t_0}\frac{1}{\Gamma(1-\alpha)}u^{-\alpha}du + \int_{t_0}^{t+t_0} \lambda(\theta^0(u) - V_u)du + \int_{t_0}^{t+t_0}\nu\sqrt{V_u}dB_u \]
 				En utilisant un changement de variable $t^\prime = t-t_0$, on a :
@@ -391,9 +393,9 @@
 				\[ \frac{1}{\Gamma(1-\alpha)} \int_{0}^{t+t_0}(t + t_0-u)^{-\alpha}V_u^{t_0}du - \frac{1}{\Gamma(1-\alpha)} \int_{t_0}^{t_0}(t+t_0-u)^{-\alpha}V_udu \]
 				Et,
 				\[ \frac{1}{\Gamma(1-\alpha)} ((t_0 - u)^{-\alpha} - (t + t_0 - u)^{-\alpha}) = \frac{\alpha}{\Gamma(1-\alpha)}\int_{0}^{t}(t+t_0 - u)^{-1-\alpha}dv  \]
-				Puis on dérive :
+				Puis on obtient :
 				\begin{multline}
-					I^{1-\alpha}V_t^{t_0} = \frac{1}{\Gamma(1-\alpha}\int_{0}^{t_0} \int_{0}^{t}(t_0-u+v)^{-1-\alpha}dvV_udu + \int_{0}^{t}(t_0+u){-\alpha}duV_0 \\ + \int_{0}^{t}\lambda(\theta^0(u+t_0) - V_u^{t_0}du + \int_{0}^{t} \nu \sqrt{V_u^{t_0}}dB_u^{t_0}
+					I^{1-\alpha}V_t^{t_0} = \frac{1}{\Gamma(1-\alpha)}\int_{0}^{t_0} \int_{0}^{t}(t_0-u+v)^{-1-\alpha}dvV_udu + \int_{0}^{t}(t_0+u){-\alpha}duV_0 \\ + \int_{0}^{t}\lambda(\theta^0(u+t_0) - V_u^{t_0}du + \int_{0}^{t} \nu \sqrt{V_u^{t_0}}dB_u^{t_0}
 				\end{multline}
 				On peut encore réécrire cela comme suit : 
 				\[ V_{t_0} \frac{t^{1-\alpha}}{(1-\alpha)\Gamma(1-\alpha)} + \int_{0}^{t} \lambda(\theta^{t_0}(u) - V_u^{t_0})du + \int_{0}^{t}\nu\sqrt{V_u^{t_0}}dB_u^{t_0}, \]
@@ -412,7 +414,7 @@
 					\[ \leq c_\epsilon(\omega)u^{-1/2 - \epsilon} \int_{0}^{\infty}(x+1)^{-1-\alpha}x^{\alpha - 1/2 - \epsilon}dx\]
 					
 				Pour finir nous avons : 
-					\[ \int_{0}^{t}V_s^{t_0}ds = \frac{1}{\Gamma{\alpha}} \int{0}{t}(t-s)^{\alpha - 1}I^{1-\alpha}V_s^{t_0}ds \]
+					\[ \int_{0}^{t}V_s^{t_0}ds = \frac{1}{\Gamma{(\alpha)}} \int_{0}^{t}(t-s)^{\alpha - 1}I^{1-\alpha}V_s^{t_0}ds \]
 				qui vaut :
 					\[ V_{t_0}t + \frac{1}{\alpha}\int_{0}^{t}\int_{0}^{s}(s-u)^{\alpha - 1}\lambda(\theta^{t_0}(u) - V_u^{t_0})duds + \frac{1}{\Gamma(\alpha)} \int_{0}^{t}\int_{0}^{s}(s-u)^{\alpha - 1}\nu\sqrt{V_u^{t_0}}dB_u^{t_0}ds \] \newline
 				On conclut, en différentiant l'équation au dessus que la dynamique de ($S^{t_0}, V^{t_0}$) est donnée par : 
@@ -435,22 +437,22 @@
 					\[h(a, t_{k+1}) = \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}g(a,s)ds \] \newline
 					Est donnée par :
 					\[ \frac{1}{\Gamma(\alpha)}\int_{0}^{t_{k+1}}(t_{k+1}-s)^{\alpha-1}\hat{g}(a,s)ds \] \newline
-					Avec : 
+					Avec une interpolation linéaire de la fonction $g$ on obtient : 
 					\[ \hat{g}(a,t) = \frac{t_{j+1} - t}{t_{j+1} - t_j} \hat{g}(a,t_{j})+  \frac{t - t_j}{t_{j+1} - t_j} \hat{g}(a,t_{j+1}), \;\;\; t \in [t_j, t_{j+1}], \;\;\; 0 \leq j \leq  k \] \newline
 					Cela nous amène au schéma suivant : 
-					\[ \hat{h}(a, t_{k+1} = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) +   a_{k+1, k+1}F(a, \hat{h}(a, t_{k+1}))\] \newline
+					\[ \hat{h}(a, t_{k+1}) = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) +   a_{k+1, k+1}F(a, \hat{h}(a, t_{k+1}))\] \newline
 					Où :
 					\[ a_{0, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)} (k^{\alpha +1} - (k-\alpha)(k+1)^\alpha)\] \newline
 					\[  a_{j, k+1} =  \frac{\Delta^\alpha}{\Gamma(\alpha+2)} ((k-j+2)^{\alpha + 1} + (k-j)^{\alpha+1} + (k-j)^{\alpha + 1} - 2(k-j+1)^{\alpha + 1}), \;\;\; 1 \leq j \leq k \] \newline
 					De plus, 
 					\[a_{k+1, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha+2)}  \] \newline
-					On calcule ensuite une pre-estimation de $\hat{h}(a, t_{k+1})$ basée sur une somme de Riemann 
+					On calcule ensuite une pré-estimation de $\hat{h}(a, t_{k+1})$ basée sur une somme de Riemann 
 					\[ \hat{h}^P(a, t_{k+1})  = \frac{1}{\Gamma(\alpha)} \int_{0}^{t}(t-s)^{\alpha - 1}\tilde{g}(a,s)ds,\] \newline
 					Où : 
 					\[ \tilde{g}(a, t) = \tilde{g}(a, t_j), \;\;\; t \in [t_j, t_{j_+1}), \;\;\; 0 \leq j \leq k  \] \newline
 					Donc on a :
 					\[ \tilde{h}^P(a, t_{k+1})  =  \sum_{0 \leq j \leq  k} b_{j, k+1}F(a, \hat{h}(a, t_j))\] \newline
-					Avec :
+					Avec  :
 					\[ b_{j, k+1} = \frac{\Delta^\alpha}{\Gamma(\alpha + 1)}((k-j+1)^\alpha - (k-j)^\alpha), \;\;\; 0 \leq j \leq k \] \newline
 					Et finalement on a donc : 
 					\[ \hat{h}(a, t_{k+1}) = \sum_{0 \leq j \leq  k} a_{j, k+1}F(a, \hat{h}(a, t_j)) + a_{k+1, k+1}F(a, \hat{h}^P(a, t_j)), \;\;\; \hat{h}(a, 0) = 0,  \] \newline
@@ -532,7 +534,7 @@
 	
 	On peut en déduire une formule similaire pour le put, on peut donc répliquer de manière théorique, toutes fonctions en utilisant uniquement des Calls et des Puts (Continuum Calls/Puts).
 	On écrit donc : 
-	\[ f(S_T) = f(\kappa) + f^\prime(\kappa)(S-\kappa) +  \int_{-\infty}^{\kappa}f^{\prime\prime}(K)(K-S)^+dK + \int_{\kappa}^{\infty}f^{\prime\prime}(K)(S-K)^+ dK\]
+	\[ f(S_T) = f(\kappa) + f^\prime(\kappa)(S_T-\kappa) +  \int_{-\infty}^{\kappa}f^{\prime\prime}(K)(K-S_T)^+dK + \int_{\kappa}^{\infty}f^{\prime\prime}(K)(S_T-K)^+ dK\]
 	Elle est parfois utilisée pour le pricing variance swap sur l'indice VIX.
 
    
