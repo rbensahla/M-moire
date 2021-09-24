@@ -17,7 +17,7 @@
 \author{\bsc{Réda Bensahla - Université de Lille} }
 
 
-\title{ Mémoire de recherche \newline  \phantom{a} \newline  \phantom{a} \newline  Pour l'obtention du Master 2 Mathématiques Finance Computationnelle et Actuariat  \newline \newline \newline L'utilisation du mouvement brownien fractionnaire pour la modélisation de la log-volatilité des actifs financiers (Rough Volatility)}
+\title{ L'utilisation du mouvement brownien fractionnaire pour la modélisation de la log-volatilité des actifs financiers (Rough Volatility)}
 
 
 % Definition of \maketitle
@@ -70,7 +70,7 @@
 	  \[ B^H(t) := \frac{1}{C(H)}\int_{\mathbb{R}} [ ((t-s)^+)^{H-\frac{1}{2}}-((-s)^+)^{H-\frac{1}{2}}\ ]\mathrm{d}B(s),\] 
 	  Avec : $C(H) = \left(  \int_{0}^{\infty} \left((1+s)^{H-\frac{1}{2}} - s^{H - \frac{1}{2}} \right)^2ds + \frac{1}{2H}      \right)^{\frac{1}{2}}$
 	  
-	  Nous allons démontrer ce théorème : \newline
+	  Nous allons démontrer ce théorème, selon Mandelbrot-Van-Ness : \newline
 	  On définit $f_t(s) = ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}, \;\;\; s \in \mathbb{R}, t \geq 0$ \newline
 	  Il est nécessaire de souligner que dans la définition de l'intégrale de Wiener l'opérateur intégrant doit être dans $L^2$, autrement dit : $\int_{\mathbb{R}} f_t(s)^2ds < \infty$, \newline Lorsque $H \neq \frac{1}{2}$, $s \rightarrow -\infty$, $f_t(s)$ tends vers $(-s)^{H-\frac{3}{2}} $, de carré intégrable, et pour $t \geq 0$ posons : 
 	  \[ X_t = \int_{\mathbb{R}} \left[ ((t-s)^+)^{H-\frac{1}{2}} - ((-s)^+)^{H-\frac{1}{2}}   \right]dB_s \]
@@ -200,7 +200,9 @@
 		\end{itemize}
 		
 	\subsection{Schéma numérique de Milstein}
-		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. \newline \newline
+	
+		Nous allons définir le schéma de Milstein selon Unal et Dinler.\newpage 
+		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. 			\newline 			\newline
 		Le Schéma de Milstein est valable pour tout $H \in ]0;1[$, sa formule est donnée par :
 		\begin{multline}
  			\chi(t_{i+1}) =  \chi(t_i) + f(\chi(t_i), ti)\Delta t + g(\chi(t_i), t_i)\Delta B_i^H \\ + \frac{1}{2}g(\chi(t_i), t_i)g\prime(\chi(t_i), ti) [(\Delta B_i^H)^2 - (t_{i+1}^{2H} - t_i^{2H})] + \epsilon_i
@@ -216,7 +218,7 @@
 		
 	\subsection{Processus construits sur le mouvement brownien fractionnaire}
 		\subsubsection{Linéarisation d'équations différentielles stochastiques unidimensionnelle}
-			Pour pouvoir avancer dans la suite de notre étude (pour pouvoir donner une solution exacte du Processus d'Ornstein-Uhlenbeck fractionnaire) nous avons besoin d'introduire, suivant la présentation de [UD07], une méthode de construction de solutions théoriques. \newline
+			Pour pouvoir avancer dans la suite de notre étude (pour pouvoir donner une solution exacte du Processus d'Ornstein-Uhlenbeck fractionnaire) nous avons besoin d'introduire, suivant la présentation de Unal et Dinler, une méthode de construction de solutions théoriques. \newline
 			\paragraph{Théorème 1} Posons : 
 			\[ dX_t = f(X_t,t)dt + g(X_t,t)dB_t^H  \tag{1} \] 
 			Où $X_0 = x_0, t \geq 0, H \in (0,1)$ et $dB_t^H$ l'incrément du mouvement brownien fractionnaire $B^H_t$ , avec f et g, deux fonctions supposées assez régulières, l'équation (1) peut s'écrire sous la forme linéaire suivante : 
@@ -274,7 +276,7 @@
 			Le modèle CIR dirigé par un mouvement brownien fractionnaire est défini par la dynamique suivante : 
 			\[ dX_t = \gamma(t)(\theta(t)-X_t)dt + \sigma(t)\sqrt{x}dB^H_t \]
 			Ce modèle est utilisé afin de modéliser l'évolution de taux d'intérêts. \newline
-			On a : $f(x,t) = \gamma(t)(\theta(t)-x)$, $g(x,t) = \sigma(t)\sqrt{x}$. On a donc $L = \frac{1}{2} \frac{\sigma(t)}{\sqrt{x}} + \frac{\sigma(t)}{\sigma(t)} \frac{-1}{2}x^{-\frac{3}{2}}\theta(t) - \frac{1}{2}x^{-\frac{1}{2}} -Ht^{2H-1}\frac{-\sigma(t)}{4}x^{-\frac{3}{2}}$ \newline \newline
+			On a selon Unal et Diner : $f(x,t) = \gamma(t)(\theta(t)-x)$, $g(x,t) = \sigma(t)\sqrt{x}$. \newline On a donc $L = \frac{1}{2} \frac{\sigma(t)}{\sqrt{x}} + \frac{\sigma(t)}{\sigma(t)} \frac{-1}{2}x^{-\frac{3}{2}}\theta(t) - \frac{1}{2}x^{-\frac{1}{2}} -Ht^{2H-1}\frac{-\sigma(t)}{4}x^{-\frac{3}{2}}$ \newline \newline
 			Puis on a : $\frac{\partial}{\partial x} g(x,t)L = x^{-2}(\frac{1}{2}\gamma(t)\theta(t) -  \frac{\sigma(t)^2}{4} Ht^{2H-1}$ \newline \newline
 			On remarque que pour $\sigma(t) = \sqrt{\frac{2\gamma(t)\theta(t)}{Ht^{2H-1}}},$ $\frac{\partial}{\partial x} g(x,t)L$ s'annule et donc d'après la méthode décrite dans 1.6.1 on peut écrire l'équation différentielle stochastique sous forme linéaire.
 			Nous devons d'abord déterminer $\alpha(t)y$ comme décrit à la section 1.6.1 :
@@ -382,7 +384,7 @@
 					Dans les mêmes conditions que pour l'intégrale fractionnaire, on peut définir l'opérateur de dérivée fractionnaire comme suit : 
 					\[ D^\alpha f(x) = \frac{d}{dx}f^{1-\alpha}f(x) \] \newpage
 				Il convient de remarquer que lorsque $\alpha = 1$, les résultats coïncident avec les résultats du modèle de Heston classique, cependant lorsque $\alpha < 1$ la solution de l'équation de Riccati ne peuvent être établis explicitement, cependant, elles peuvent être facilement numériquement résolue. \newline
-				Finalement, la loi du processus $(S_t^{t_0}, V_t^{t_0})_{t \geq 0} = (S_{t+t_0}, V_{t+t_0})_{t \geq 0}$ est la loi du modèle Rough Heston dont les dynamiques de volatilités et de prix sont les suivants : 
+				Finalement, la loi du processus conditionnellement à $F_t$, $(S_t^{t_0}, V_t^{t_0})_{t \geq 0} = (S_{t+t_0}, V_{t+t_0})_{t \geq 0}$ est la loi du modèle Rough Heston dont les dynamiques de volatilités et de prix sont les suivants : 
 				\[ dS_t^{t_0} = S_t^{t_0}\sqrt{V_t^{t_0}}dW_t^{t_0}; \;\;\; S_0^{t_0} = S_{t_0} \]  \newline
 				\[ V_t^{t_0} = V_{t_0} + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta^{t_0}(s)-V_s^{t_0})ds+\frac{\lambda\nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\sqrt{V_s^{t_0}}dB_s^{t_0}\] \newline
 				Avec : $(W_t^{t_0}, B_t^{t_0}) = (W_{t_0+t}+W_{t_0}, B_{t_0+t}+B_{t_0})$ et $\theta^{t_0}$ est un processus $F_t-$mesurable, dépendant de $(V_u)_{0\leq u \leq t_0}.$ \newline
@@ -489,9 +491,41 @@
 					Avec : 
 					\[ z = \frac{v}{\alpha}(fK)^{(1-\beta)/2}ln \frac{f}{K} \] \newline
 					\[ \chi(z) = ln \left[  \frac{\sqrt{1-2\rho z+ z^2}+z - \rho}{1 - \rho}  \right]  \]
-				\subsubsection{Le modèle SABR dirigé par un mouvement brownien fractionnaire}	
+				\subsubsection{Le modèle rough SABR}
+					Nous ne rentrerons pas dans des considérations techniques compliquées, selon Gatheral et Fukasawa la dynamique du modèle rough SABR est donnée par : 
+					\[ \frac{dS_t}{\beta(S_t} = \alpha_tdZ_t, \;\; \frac{d \xi(s)}{\xi(s)} =  \kappa(s-t)dB_t^H\] sous une mesure-martingale équivalente $Q$, avec $\alpha_t = \sqrt{\xi(t)}$ et $\beta$ une fonction continue et positive. \newline
+					(Z, B) est un mouvement $F_t$brownien bi-dimensionel corrélé, tel que $d \langle Z, B \rangle_t  = \rho dt, \kappa(t) = \eta \sqrt{2Ht^{H-1/2}}, \; \rho \in [-1;1], \eta > 0$ et $H \in (0, \frac{1}{2}]$, on suppose que $(\xi_0(s))_{s\leq0}$ est une famille de variable aléatoire $F_0-$mesurable et que la courbe $s \rightarrow \xi(s)$ 					est continue.
+					
+			\subsection{L'indice VIX}
+				\subsubsection{Introduction}
+					Le VIX est un indicateur de volatilité de marché financier. \newline
+					Bayer, Friz et Gatheral ont proposé un modèle adapté au processus log-prix $X_t:=log(S):$, la dynamique de leur modèle est la suivante :
+					\[ dX_t = -\frac{1}{2}V_tdt + \sqrt{V_t}dB_t, \;\; X_0 = 0 \]
+					\[  V_t = \xi_0(t)\epsilon(2 \nu C_H\upsilon_t), \;\;\; V_0 > 0,  \]
+					Le processus $\upsilon$ défini par : 
+					\[ \upsilon_t := \int_{0}^{t}(t-u)^H_{-} \]
+					Avec $H_{+} = H + \frac{1}{2}$ et $H_{-} = H - \frac{1}{2}$ \newline
+					Est un processus Gaussien avec une fonction de covariance :
+					\[ \mathbb{E}[\upsilon_t \upsilon_s] = s^{2H}\int_{0}^{1} \left(\frac{t}{s} - u    \right)^H_- (1-u)^H_-du, \;\;\;  pour tout s,t\in[0,1] \]
+					De plus, on définit la volatilité moyenne par : 
+					\[ \sigma_T^2(t) = \frac{1}{T-t}\int_{t}^{T}\xi_T(u)du,\]
+				\subsubsection{VIX Futures sur le modèle rough Bergomi}
+					On définit le VIX au temps T par : 
+					\[ VIX_T^2 := \mathbb{E} \left[    \frac{1}{\Delta}\int_{T}^{T+\Delta}d \langle    X_s, X_s     \rangle ds   \rvert F_t \right] \]
+					\[ \mathbb{B}_T := \mathbb{E}[VIX_T \rvert F_0]  = \mathbb{E} \left[\sqrt{\frac{1}{\Delta}\int_{T}^{T+\Delta}d \langle    X_s, X_s     \rangle ds } \rvert F_0 = \mathbb{E} \left[   \sqrt{\frac{1}{\Delta}\int_{T}^{T+\Delta \xi_T(s)ds}}  \rvert F_0 \right]  \right] \]
+					Lorsque $T > 0$, $\xi_T(s)$ est n'est pas $F_0-$mesurable, nous allons utiliser cette variable à plusieurs reprises : 
+					\[\eta_T(t) := exp(2\nu C_H\upsilon_t^T)\]
+					La dynamique est donnée par : 
+					\[ VIX_T = \left( \frac{1}{\Delta}\int_{T}{T+\Delta}\xi_0(t)\eta(t)exp \left(   \frac{\nu^2 C_H^2}{H}[(T-t)^{2H} - t^{2H}]  \right)dt     \right) ^{1/2} \]
+					La démonstration est donnée dans le papier de Jacquier, Martini et Muguruza. "ON VIX FUTURES IN THE ROUGH BERGOMI MODEL".
+					La courbe de variance forward $\xi_t$ dans le modèle Rough Bergomi admet la représentation suivante : 
+					\[ \xi_T(t) = \xi_0(t)\eta_T(t)exp  \left(    \frac{\nu^2 C_H^2}{H}[(T-t)^{2H} - t^{2H}]    \right) \]
+					Cette démonstration est aussi donnée dans le papier précédent.
+					
+				
 					
 			\subsection{Le modèle RFSV}
+				\subsubsection{Définition du modèle}
 				Gatheral et Rosenbaum ont montré empiriquement, que la distribution des incréments de la log-volatilité se rapprochée de la distribution Gaussienne et que ces incréments possédaient une propriété d'échelle, ainsi ils proposent le modèle suivant :
 				\[ log \sigma_{t+\Delta} - \log \sigma_t  = \nu (B^H_{t+\Delta} - B^H_t),\]
 				Avec $B^H_t$ un mouvement brownien fractionnaire, $\nu > 0$ et $H$ l'index de Hurst mesuré empiriquement.
@@ -508,10 +542,35 @@
 				\[ \mathbb{E} [\sup_{t \in [0,T]}   \lvert X_t^\alpha - X_0^\alpha - \nu B_t^H \rvert ] \rightarrow 0  \]
 				Avec $B_t^H$ un mouvement brownien fractionnaire et $X_t^\alpha$ un processus d'Ornstein-Uhlenbeck défini plus haut. 
 				Cette assertion implique que si la condition $\alpha << 1/T$  est respectée et que l'on se restreint à une étude sur $[0;T]$ on peut agir comme si la log-volatilité était un mouvement brownien fractionnaire.
+				\subsubsection{Prévisions de la volatilité dans le modèle RFSV}
+					Voyons maintenant une formule très importante permettant la prévision de la log-volatilité, il s'agit de la formule de Neuzmann-Poor utilisé dans l'étude de Rosenbaum et Gatheral, celle-ci est donnée plus généralement par :
+					\[ \mathbb{E}[B_{t+\Delta}^H \rvert F_t] = \frac{cos(H\pi)}{\pi}\Delta^{H+1/2}\int_{-\infty}^{t}\frac{B_s^H}{(t-s+\Delta)(t-s)^{H+1/2}}ds, \]
+					Où : $B^H_t$ est un mouvement brownien fractionnaire avec un paramètre de Hurst $H < 1/2$ et $F_t$ la filtration engendrée.\newline
+					Par la suite, on va approximer le processus de volatilité ($\sigma_t$) d'Ornstein-Uhlenbeck par : $2\nu B_t^H + C$, avec $C$ et $\nu$ deux constantes, la formule de prédiction de la volatilité est donc donnée par :
+					\[ \mathbb{E}[log\sigma_{t+\Delta}^2 \rvert F_t] = \frac{cos(H\pi)}{\pi}\Delta^{H+1/2}\int_{-\infty}^{t}\frac{log \, \sigma_s^2}{(t-s+\Delta)(t-s)^{H+1/2}}ds  \]
+					Dans l'étude de Rosenbaum et Gatheral, cette formule est utilisé afin de prévoir la log-volatilité à 1, 5 et 20 jours.
+				
+				
 										
 		
-   
+   \newpage
    \section*{Conclusion}
+   Aujourd'hui tous les établissements financiers ont l'habitude de modéliser les prix d'actifs par des semi-martingales par rapport au mouvement brownien classique pour le prix des couvertures d'options et de divers contrats, en pratique les experts de la finance utilisent des modèles plus complexes que le modèle de Black-Scholes, tels que : Des modèles à volatilité, locale ou combinaison des deux local/stochastique \newline
+L'objectif est de répliquer au mieux les aspects empiriques des marchés financiers, les Modèles CEV, SABR, Heston et Bergomi qui sont les plus utilisés en pratique pour leur facilités : Formule fermées pour prix et couverture, méthodes de Monte-Carlo issues de l'analyse numérique, ces modèles présentent leur avantages et leurs inconvénients, par exemple : \newline Les modèles à volatilité locale pour les options vanilles, mais mauvaise volatilité implicite, volatilité stochastique pour le pricing d'option exotique, notamment les paths-dependents ou encore SABR pour les marchés FOREX, ces modèles à volatilité stochastique génèrent une bonne surface de volatilité mais ne permettent pas d'avoir un bon calibrage du skew-volatility à la monnaie (qui est la dérivée de la volatilité implicite par rapport au strike), cependant ces modèles n'arrivent pas à reproduire tous les aspects empiriques des marchés financiers. \newline
+On a vu dans ce mémoire une nouvelle aproche proposée par Rosenbaum et Gatheral qui établit le fait que la log-volatilité est en réalité rugueuse, c'est-à-dire dirigée par un mouvement brownien fractionnaire de paramètre de Hurst $H < \frac{1}{2}$, de nombreux chercheurs ont alors essayé d'adapter ce nouveau fait établit en construisant de nouveaux modèles basés sur cette hypothèse.\newline
+Malheureusement, comme nous avons pu le voir le fait que le mouvement brownien fractionnaire ne soit ni une martingale, ni un processus Markovien, rend les choses compliqués puisque nous n'avons pas encore les moyens techniques de définir proprement les intégrales stochastiques pour $H < \frac{1}{2}$ et en déduire des formules de changement de variables type Itô.\newline
+De plus, le côté non-markovien du mouvement brownien fractionnaire rend difficile le calcul de l'espérance conditionnelle nécessaire au pricing d'option.\newline
+De nouvelles constructions comme celle du Rough Heston, Rough SABR, Rough Bergomi ont montré une réelle efficacité pour répondre aux problématiques soulevés précédemment, de plus, la prévision de volatilité est surprenante puisqu'elle colle très bien aux données empiriques (cf Figure 10 , de Rosenbaum et Gatheral). \newline
+		\begin{figure}[H]
+  			\includegraphics[width=\linewidth, height=80mm]{GatheralVolatilite.png}
+  			\caption{Prévision de volatilité en rouge; données empiriques en bleu, graphique de Jim Gatheral}
+ 			\label{fig:figD}
+		\end{figure}
+Il est aussi très important de remarquer que dans les modèles Rough cités précédemment on peut obtenir des informations très importantes des formules fermées ainsi que certaines lois conditionnelles qui permettent d'en déduire par exemple un hedging optimal. \newline
+La perspective apportée par le mouvement brownien fractionnaire paraît très intéressante et semble susciter l'intérêt de plusieurs grandes compagnies.\newline
+Enfin, c'est un domaine de recherche extrêmement actif qui a montré son efficacité en pratique, il convient de noter néanmoins que toute cette approche théorique est assez compliquée et il faudra certainement du temps avant que la large majorité des institutions financières adoptent définitivement cette théorie.
+ \newpage
+   
    
    \addcontentsline{toc}{section}{Conclusion}
    
@@ -661,6 +720,9 @@
 	
 	\bibitem{C}
 	{Martin Schmelze} {\textbf{\em Option Pricing Formulae using Fourier Transform: Theory and Application }}
+	
+	\bibitem{C}
+	{Antoine Jacquier, Claude Martini, Aitor Muguruza} {\textbf{\em ON VIX FUTURES IN THE ROUGH BERGOMI MODEL }}
 	
 	
 
