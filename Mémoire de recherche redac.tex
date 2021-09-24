@@ -16,7 +16,21 @@
 \date{September 23, 2021}
 \author{\bsc{Réda Bensahla - Université de Lille} }
 
-\title{Le Mouvement Brownien Fractionnaire appliqué à la Log-Volatilité des actifs financiers (Rough Volatility)}
+\title{L'utilisation du mouvement brownien fractionnaire pour la modélisation de la log-volatilité des actifs financiers (Rough Volatility)}
+
+
+% Definition of \maketitle
+\makeatletter         
+\def\@maketitle{
+\begin{center}
+{\Huge \@title }\\[4ex] 
+{\Large  \@author}\\[4ex] 
+\@date\\[8ex]
+\includegraphics[width = 40mm]{logo.png}
+\end{center}}
+\makeatother
+
+
 
 \begin{document}
    \maketitle 
@@ -41,8 +55,8 @@
       Le terme $\sigma_t$ représente quant à lui le processus de volatilité du modèle.
       D'un côté nous avons des modèles comme le modèle de Black-Scholes où la volatilité est souvent constante ou est une fonction déterministe du temps, puis d'un autre côté, nous avons des modèles à volatilité stochastiques, la volatilité $\sigma_t$ est modélisée par une semi-martingale brownienne, parmi ces modèles nous pouvons citer le                                 	modèle de Heston dont voici la dynamique de la volatilité: \[ d\nu_t = \kappa(\theta - \nu_t)dt + \xi \sqrt{\nu_t} dB_t\] Ou encore le modèle CEV ("Constant Elasticity of Variance Model") dont la volatilité est stochastique mais déterministe, sa dynamique s'écrit comme suit :  \[ dS_t = \mu S_tdt + \sigma S_t^\gamma dB_t\]
       
-      \subsection{Le mouvement brownien fractionnaire}
-      	\subsubsection{Définition du mouvement brownien fractionnaire}
+      \section{Le mouvement brownien fractionnaire et la volatilité rugueuse}
+      	\subsection{Définition du mouvement brownien fractionnaire}
      	  Dans cette section, nous allons définir le mouvement brownien fractionnaire, ses propriétés, comment le simuler et enfin comment estimer l'index de Hurst (H).\newline \newline Le mouvement brownien fractionnaire noté $\{B^H(t)\}_{t\in\mathbb{R}}$ d'exposant de Hurst $H\in ]0;1]$, est l'unique processus gaussien centré, nul en zéro, dont les 	  accroissements sont stationnaires et auto-similaires, il est défini par  sa fonction de covariance $\Gamma(t,s)$ : \[  \Gamma(t,s) = \mathbb{E} [B^H(s)B^H(t)] = \frac{C(H)}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
 	  Sa fonction d'auto-covariance $\gamma(t,s)$ est donnée par : 
 	  \[  \gamma(t,s) =  \frac{C(H)}{2}(\lvert t-s-1 \rvert^{2H}  -   2\lvert t-s \rvert^{2H}      +     \lvert t-s+1 \rvert^{2H}))  \]
@@ -93,7 +107,7 @@
    		\item Lorsque $H > \frac{1}{2}$ les trajectoires sont plus régulières, on constate l'effet de longue mémoire.
 	\end{itemize} 
 	  
-	  \subsubsection{Simulation du mouvement brownien fractionnaire} 
+	  \subsection{Simulation du mouvement brownien fractionnaire} 
 	  Nous allons donc présenter ici une méthode de simulation du mouvement brownien fractionnaire : La méthode de Cholesky \newline
 	  	\paragraph{Méthode de Cholesky}
 		Il s'agit ici d'une méthode qui est exacte en théorie, mais qui n'est malheureusement pas très utile en pratique car son execution nécessite beaucoup de temps. \newline
@@ -122,7 +136,7 @@
 		\end{itemize}
 	Dans l'article de Comte et Renault, les auteurs proposent, en partant du fait que la volatilité est un processus à mémoire-longue, de modéliser la log-volatilité en utilisant un mouvement brownien fractionnaire avec pour paramètre $H \in ]\frac{1}{2},1[$, ce modèle est appelé Fractional Stochastic Volatility (FSV) \newline \newline
 	
-	Dans l'article de Gatheral, Jaisson et Rosenbaum, un modèle plus complexe est proposé, le Rough Fractional Stochastic Volatility (RFSV), celui-ci est le même que le modèle FSV mais en prenant $H \in ]0; \frac{1}{2}[$, nous détaillerons ces modèles dans la section ().\newline \newline
+	Dans l'article de Gatheral, Jaisson et Rosenbaum, un modèle plus complexe est proposé, le Rough Fractional Stochastic Volatility (RFSV), celui-ci est le même que le modèle FSV mais en prenant $H \in ]0; \frac{1}{2}[$, nous détaillerons le modèle RFSV dans la section 4.5.\newline \newline
 	
 	Nous utiliserons par la suite le mouvement brownien fractionnaire afin de modéliser les incréments de la log-volatilité, en partant du principe que les incréments stationnaires du mouvement brownien fractionnaire satisfont, pour tout $t \in \mathbb{R}, \Delta \geq 0, q>0$ : 
 	 \[ \mathbb{E}[\lvert B_{t+\Delta}^H -  B_t^H \rvert^q]  = K_q\Delta^{qH}     \] 
@@ -169,10 +183,10 @@
  		\label{fig:FigB}
 	\end{figure}
 	
-   \subsection{Équations Différentielles Stochastiques dirigées par un mBF}
+   \section{EDS dirigées par un mouvement brownien et processus d'Ornstein-Uhlenbeck fractionnaire}
    Dans cette section nous allons nous intéresser à la résolution théorique de certaines EDS ou lorsque la solution théorique n'est pas atteignable, nous présenterons un schéma de résolution numérique (Schéma de Milstein).
    Enfin, nous parlerons des équations dirigés par le mouvement brownien fractionnaire tels que le processus d'Ornstein-Uhlenbeck, le modèle CIR ou encore le modèle de Black Scholes fractionnaire.
-   	\subsubsection{Présentation sous la forme différentielle et sous la forme intégrale}
+   	\subsection{Présentation sous la forme différentielle et sous la forme intégrale}
 		L'équation différentielle stochastique dirigés par un mouvement brownien fractionnaire est donnée par :  \[  dY_t = f(Y_t, t)dt + g(Y_t, t)dB_t^H  \] 
 		Où $B_t^H$ est un mouvement brownien fractionnaire standard. \newline 
 		Une présentation alternative, sous forme d'intégrale :
@@ -184,7 +198,7 @@
    			\item Dans le cas où $H \in ]\frac{1}{4};\frac{1}{2}[$ on pourrait définir une notion de chemins rugueux pour définir des intégrales stochastiques fractionnaires.
 		\end{itemize}
 		
-	\subsubsection{Schéma numérique de Milstein}
+	\subsection{Schéma numérique de Milstein}
 		Une EDS ne possède pas souvent une solution théorique explicite (formule fermée), et il est donc parfois nécessaire d'avoir recours à des Schémas numérique de calcul, dans le cas où nous avons une EDS dirigée par un mouvement brownien standard, il peut être judicieux d'utiliser un Schéma numérique d'Euler. \newline \newline
 		Le Schéma de Milstein est valable pour tout $H \in ]0;1[$, sa formule est donnée par :
 		\begin{multline}
@@ -199,7 +213,7 @@
 		\end{multline}
 		$\epsilon_i\prime$ représente le résidu, et est supérieur à $\epsilon_i$ car l'approximation de $t_{i+1}^{2H}$ accroît cette marge d'approximation.
 		
-	\subsection{Modèles et Processus construits sur le mouvement brownien fractionnaire}
+	\subsection{Processus construits sur le mouvement brownien fractionnaire}
 		\subsubsection{Linéarisation d'équations différentielles stochastiques unidimensionnelle}
 			Pour pouvoir avancer dans la suite de notre étude (pour pouvoir donner une solution exacte du Processus d'Ornstein-Uhlenbeck fractionnaire) nous avons besoin d'introduire, suivant la présentation de [UD07], une méthode de construction de solutions théoriques. \newline
 			\paragraph{Théorème 1} Posons : 
@@ -253,8 +267,9 @@
 		\end{figure}
 		\newpage
 		
-		
-		\subsubsection{Modèle de Cox-Ingersoll-Ross fractionnaire}
+		On constate bien le comportement caractéristique du processus d'Ornstein-Uhlenbeck qui n'est autre que le retour à la moyenne (mean-reverting).
+	\section{Les modèles fractionnaires (Rough Model)}
+		\subsection{Modèle de Cox-Ingersoll-Ross fractionnaire}
 			Le modèle CIR dirigé par un mouvement brownien fractionnaire est défini par la dynamique suivante : 
 			\[ dX_t = \gamma(t)(\theta(t)-X_t)dt + \sigma(t)\sqrt{x}dB^H_t \]
 			Ce modèle est utilisé afin de modéliser l'évolution de taux d'intérêts. \newline
@@ -290,7 +305,7 @@
 		\newpage
 			
 			
-		\subsubsection{Le modèle de Black-Scholes fractionnaire}
+		\subsection{Le Modèle de Black-Scholes fractionnaire}
 			Le modèle de Black-Scholes existe aussi en version fractionnaire, la partie aléatoire est modélisée par un mouvement brownien fractionnaire. \newline
 			Cependant, ce modèle n'est pas très utilisé en pratiqué car il écarte l'hypothèse d'absence d'opportunités d'arbitrages
 		\subsubsection{Modélisation d'un actif sous-jacent sous Black-Scholes fractionnaire}
@@ -476,13 +491,27 @@
 				\subsubsection{Le modèle SABR dirigé par un mouvement brownien fractionnaire}	
 					
 			\subsection{Le modèle RFSV}
-				
-					
+				Gatheral et Rosenbaum ont montré empiriquement, que la distribution des incréments de la log-volatilité se rapprochée de la distribution Gaussienne et que ces incréments possédaient une propriété d'échelle, ainsi ils proposent le modèle suivant :
+				\[ log \sigma_{t+\Delta} - \log \sigma_t  = \nu (B^H_{t+\Delta} - B^H_t),\]
+				Avec $B^H_t$ un mouvement brownien fractionnaire, $\nu > 0$ et $H$ l'index de Hurst mesuré empiriquement.
+				La volatilité peut donc s'écrire : 
+				\[ \sigma_t = \sigma exp(\nu W^H_t)  \]
+				Ce modèle n'étant pas stationnaire cela amène à considérer non plus la log-volatilité comme un mouvement brownien fractionnaire, mais comme un processus d'Ornstein-Uhlenbeck fractionnaire 
+				Un processus d'Ornstein-Uhlenbeck stationnaire est simplement défini comme la solution stationnaire de l'équation différentielle stochastique suivante : 
+				\[ dX_t = \nu dB_t^H - \alpha(X_t-m)dt, \]
+				Avec $m \in \mathbb{R}$ et $\nu$ et $\alpha$ sont des paramètres positifs, bien entendu la forme explicite de la solution du processus d'Ornstein-Uhlenbeck est donnée par : 
+				\[ X_t = \nu \int_{-\infty}^{t}e^{-\alpha(t-s)}dB_t^H + m \] \newpage
+				Ainsi, sur $[0; T]$ on a maintenant : 
+				\[ \sigma_t = exp(X_t) \, \;\;\; t \in [0;T]\]
+				Avec : $\nu > 0, \alpha > 0, m\in \mathbb{R}$ et $H < \frac{1}{2}$, ce modèle est stationnaire, de plus lorsque $\alpha << 1/T$ la log-volatilité se comporte (localement) comme un mouvement brownien fractionnaire, de plus, selon Gatheral et Rosenbaum sous certaines conditions,  lorsque $\alpha$ tends vers 0 on a : 
+				\[ \mathbb{E} [\sup_{t \in [0,T]}   \lvert X_t^\alpha - X_0^\alpha - \nu B_t^H \rvert ] \rightarrow 0  \]
+				Avec $B_t^H$ un mouvement brownien fractionnaire et $X_t^\alpha$ un processus d'Ornstein-Uhlenbeck défini plus haut. 
+				Cette assertion implique que si la condition $\alpha << 1/T$  est respectée et que l'on se restreint à une étude sur $[0;T]$ on peut agir comme si la log-volatilité était un mouvement brownien fractionnaire.
 										
-					
-	\newpage
+		
    
    \section*{Conclusion}
+   
    \addcontentsline{toc}{section}{Conclusion}
    
    
