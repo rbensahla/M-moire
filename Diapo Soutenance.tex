@@ -255,14 +255,35 @@
 
 \begin{frame}
 	\frametitle{Les modèles fractionnaires : Le Modèle Rough Heston}
-		Dans ce modèle la volatilité est dirigée par un mouvement brownien fractionnaire
-		Plus généralement on a : 
+		
+		Sa version Rough est donnée par la dynamique suivante : 
 			\[ dS_t = S_t\sqrt{V_t}dW_t\]
 		La solution donnée pour $dV_t$ est donnée par :
 			\[  V_t = V_0 + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta - V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_t}dB_s\]
-			
-		
+		Selon Alos, Fukasawa et Bayer ce modèle permet une bonne représentation du comportement de la surface de volatilité implicite, et en particulier la dépendance de la volatilité par rapport au strike (à la monnaie).
+
 \end{frame}
+
+
+\begin{frame}
+	\frametitle{Le modèle Rough Heston : Loi conditionnelle du couple ($S_t^{t_0}, V_t^{t_0}$) et forme généralisée, partie 1}
+		La loi du processus conditionnellement à $F_t$, $(S_t^{t_0}, V_t^{t_0})_{t \geq 0} = (S_{t+t_0}, V_{t+t_0})_{t \geq 0}$ est la loi du modèle Rough Heston dont les dynamiques de volatilités et de prix sont les suivants : 
+				\[ dS_t^{t_0} = S_t^{t_0}\sqrt{V_t^{t_0}}dW_t^{t_0}; \;\;\; S_0^{t_0} = S_{t_0} \]  \newline
+				\[ V_t^{t_0} = V_{t_0} + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta^{t_0}(s)-V_s^{t_0})ds+\frac{\lambda\nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\sqrt{V_s^{t_0}}dB_s^{t_0}\] \newline
+				Avec : $(W_t^{t_0}, B_t^{t_0}) = (W_{t_0+t}+W_{t_0}, B_{t_0+t}+B_{t_0})$ et $\theta^{t_0}$ est un processus $F_t-$mesurable, dépendant de $(V_u)_{0\leq u \leq t_0}.$ \newline
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Le modèle Rough Heston : Loi conditionnelle du couple ($S_t^{t_0}, V_t^{t_0}$) et forme généralisée, partie 2}
+				On peut aussi donner une forme généralisée du modèle Rough Heston :
+				\[ dS_t = S_t\sqrt{V_t}dW_t \] \newline
+				\[ V_t = V_0 + \frac{1}{\Gamma (\alpha)} \int_{0}^{t} (t-s)^{\alpha-1}\lambda(\theta^0(s)-V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_s}dB_s, \]  \newline
+				Avec $\langle dW_t, dB_t \rangle = \rho dt,  \;\;\; \alpha \in (1/2, 1).$
+\end{frame}
+
+
 
 
 
