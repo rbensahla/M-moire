@@ -1,0 +1,330 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{dsfont}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+
+\begin{document}
+
+\title{ L'utilisation du mouvement brownien fractionnaire pour la modélisation de la log-volatilité des actifs financiers (Rough Volatility)}
+
+\frametitle{Table of Contents}
+\begin{frame}
+\begin{center}
+	{\Huge \textbf{Soutenance de mémoire de recherche : }\par}
+\end{center}
+\newline L’utilisation du mouvement brownien fractionnaire pour la modélisation de la log-volatilité des actifs financiers (Rough Volatility)
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Modélisation de la volatilité et Intérêt de l'utilisation du mouvement brownien fractionnaire}
+		Log-prix $Y_t$ : Semi-martingales souvent modélisées comme suit : 
+		\[ dY_t = \mu_t dt + \sigma_t dW_t \]
+	\bigbreak
+		Exemple : Modèle CEV("Constant Elasticity of Variance Model")
+		\[ dS_t = \mu S_tdt + \sigma S_t^\gamma dB_t \]
+	\bigbreak
+		Avec $W_t$ et $B_t$ deux mouvements browniens standards
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Le mouvement brownien fractionnaire : Définition}
+		Le Mouvement Brownien Fractionnaire d'indice de Hurst $H \in  ]0; 1]$ est l'unique processus Gaussien Centré dont les caractéristiques sont les suivantes : 
+		\begin{itemize}
+			\item $B^H_0 = 0$ (Nul en zéro)
+			\item Les accroissements sont stationnaires et auto-similaires
+		\end{itemize}
+	\bigbreak
+		Il est définit par sa fonction de covariance : 
+		 \[ \Gamma(t,s) = \mathbb{E} [B^H(s)B^H(t)] = \frac{C(H)}{2}(\lvert t \rvert^{2H}  +   \lvert s \rvert^{2H}      +     \lvert t - s \rvert^{2H}))  \]
+		
+			
+\end{frame}
+
+\begin{frame}
+	\frametitle{Le mouvement brownien fractionnaire : Une autre définition }
+		Le Mouvement Brownien Fractionnaire peut aussi être définit par la représentation de Mandelbrot-Van-Ness 
+		\[ B^H_t:= \frac{1}{C(H)}\int_{\mathbb{R}} [ ((t-s)^+)^{H-\frac{1}{2}}-((-s)^+)^{H-\frac{1}{2}}\ ]dB(s),\] 
+		Le comportement du mouvement brownien fractionnaire dépend de l'index de Hurst H : 
+		\begin{itemize}
+			\item Lorsque $H < \frac{1}{2}$ les trajectoires sont irrégulières
+			\item Lorsque $H > \frac{1}{2}$ les trajectoires sont plus régulières, on constate l'effet de longue mémoire
+		\end{itemize}
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Comparaison de deux mouvements browniens fractionnaires ($H = 0.2$ et $H = 0.8)$}
+	\begin{figure}[!h]
+  		\includegraphics[width=\linewidth]{SimBrownien.png}
+  		\caption{Comparaison de deux mouvements browniens fractionnaires ($H = 0.2$ et $H = 0.8)$}
+ 		\label{fig:SimBrownien}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{La volatilité rugueuse (Rough Volatility) : Partie 1}
+		Au départ, la volatilité a été modélisée de deux façons : 
+		\begin{itemize}
+			\item Dans un premier temps : La volatilité constante ou déterministe (Cf Modèle de Black-Scholes)
+			\item Dans un second temps : La volatilité locale ou stochastiques (Cf Modèle de Heston)
+		\end{itemize}
+	\bigbreak
+	
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{La volatilité rugueuse (Rough Volatility) : Partie 2}
+		Proposition de nouveaux modèles basés sur le mouvement brownien fractionnaire, cette fois ci avec le processus de volatilité dirigé par un mouvement brownien fractionnaire :
+		\begin{itemize}
+			\item Premier modèle : FSV (Fractional Stochastic Volatility), proposé par Eric Renault et Fabienne Comte en 1998, il ne prenne en considération que $H \in ]\frac{1}{2}; 1[$ (On ne se concentrera pas sur celui-ci)
+			\item Deuxième modèle : RFSV (Rough Stochastic Volatility), reprenant les travaux de Comte et Renault, proposé en 2016 par Jim Gatheral et Mathieu Rosenbaum, celui-ci prend en compte $H \in ]0;\frac{1}{2}]$, nous reparlerons de ce modèle par la suite
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{La volatilité rugueuse (Rough Volatility) : Partie 3}
+		Intérêt de l'utilisation du mouvement brownien fractionnaire : 
+		\bigbreak
+		Modéliser les incréments de la log-volatilité, en partant du principe que les incréments stationnaires du mouvement brownien fractionnaire satisfont, pour tout $t \in \mathbb{R}$, $\Delta \geq 0$, $q > 0$ : \bigbreak
+	 	\[ \mathbb{E}[\lvert B_{t+\Delta}^H -  B_t^H \rvert^q]  = K_q\Delta^{qH}     \] 
+		Pour $H > \frac{1}{2} \Rightarrow$ Corrélation positive entre les incréments du mouvement brownien fractionnaire $\Rightarrow$ Effet mémoire longue \bigbreak
+		La trajectoire de $B_{t+1}^H$ dépend de $B_t^H$, donc : 
+		 \[  \sum_{k=0}^{+\infty}Cov[W_1^H, W_k^H - W_{k-1}^H] = +\infty   \]
+		On a : $Cov[W_1^H, W_k^H - W_{k-1}^H]$ est de l'ordre $k^{2H-2}$ avec $k\longrightarrow \infty$
+		
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{La volatilité rugueuse (Rough Volatility) : Partie 4}
+		Technique de Rosenbaum et Gatheral : \newline
+		Partir du principe que l'on a accès à différentes observations du processus de volatilité $\sigma_t$, puis découper les instants de volatilités sur $[0;T]$ tel que :  
+		\[ \sigma_0, \ldots, \sigma_\Delta, \dots, \sigma_{k\Delta}, \dots: k \in {[0,  N]}, \] où $N = \left\lfloor {T/\Delta} \right\rfloor$
+		Puis, de définir donc, pour $ q \geq 0$ : 
+		\[ m(q, \Delta) = \frac{1}{N} \sum_{k=1}^N\lvert log(\sigma_{k\Delta}) - log(\sigma_{(k-1)\Delta}) \rvert^{q}  \] 
+		(Moment d'ordre $q$ empirique) \bigbreak
+		L'objectif est d'analyser comment se comporte cette précédente quantité en fonction de la variation $\Delta$.
+		
+\end{frame}
+
+\begin{frame}
+	\frametitle{Estimation du paramètre de Hurst H : Partie 1}
+		Gatheral et Rosenbaum procède en deux étapes : \bigbreak
+		1) Comprendre comment se comporte la quantité $\frac{log \, m(q,\Delta)}{log \, (\Delta)}$, on s'aperçoit, dans la figure suivante que cette relation est linéaire
+		et on déduit donc que : 
+		\[ \forall q : \; m(q, \Delta) \propto \Delta^{\zeta_q} \]
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Estimation du paramètre de Hurst H : Partie 2}
+		\begin{figure}[!h]
+  			\includegraphics[width=\linewidth, height = 60mm]{logM(q,delta)logdelta.png}
+  			\caption{Relation entre $log(m(q, \Delta))$ et $log(\Delta)$; Calculé sur l'indice CAC 40}
+ 			\label{fig:mDelta}
+		\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Estimation du paramètre de Hurst H : Partie 3}
+		2)Etudier la fonction $\zeta_q$ en fonction de $q$ : \bigbreak
+		On s'aperçoit qu'il existe une relation linéaire entre ces deux quantités (Cf Figure suivante), et on déduit enfin la pente de cette droite qui correspond donc à H $\Rightarrow$ Relation monofractal suivante : 
+		\[ \zeta_q = qH \]
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Estimation du paramètre de Hurst H : Partie 4}
+		\begin{figure}[!h]
+  			\includegraphics[width=\linewidth, height=60mm]{RelationH.png}
+  			\caption{Relation entre $\zeta_q$ et $q$, $H\approx 0.12$}
+ 			\label{fig:}
+		\end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{Application sur d'autres indices : Partie 1}
+		En appliquant la même méthode à d'autres indices que celui du CAC-40, on obtient les résultats suivants : 
+			
+\end{frame}
+
+\begin{frame}
+	\frametitle{Application sur d'autres indices : Partie 2}
+		\begin{figure}[H]
+  			\includegraphics[width=\linewidth, height=80mm]{EstimationHetNuIndices.png}
+  			\caption{Estimation du paramètre H de différents indices}
+ 			\label{fig:FigA}
+		\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Application sur d'autres indices : Partie 3}
+		\begin{figure}[!h]
+  			\includegraphics[width=\linewidth, height=75mm]{SimRosenbaum.png}
+  			\caption{Estimation du paramètre H de différents indices, en Mai 2016, par Gatheral et Rosenbaum}
+ 		\label{fig:FigB}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{EDS dirigées par un mouvement brownien fractionnaire : Présentation, partie 1}
+		Comme les équations différentielles dirigées par un mouvement brownien classique, les EDS peuvent-être présentées sous deux formes : \newline
+		1) Différentielle :   \[  dY_t = f(Y_t, t)dt + g(Y_t, t)dB_t^H  \] 
+		2) Intégrale :  \[ Y_t = Y_s + \int_{s}^{t}f(Y_u, u)du + \int_{s}^{t}g(Y_u, u)dB_u^H \tag{1} \]  \newline
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{EDS dirigées par un mouvement brownien fractionnaire : Présentation, partie 2}
+		Il est nécessaire de distinguer les cas en fonction de H : 
+		\begin{itemize}
+			\item Pour $H = \frac{1}{2}$, l'intégrale stochastique de l'équation (1) est une martingale locale $\Rightarrow$ $Y_t$ est au minimum une semi-martingale, et la formule d'Itô est applicable
+			\item Pour $H > \frac{1}{2}$, sous certaines conditions, on peut définir l'intégrale de Stieltjes.
+			\item Pour $H \in ]\frac{1}{4}; \frac{1}{2}[$, cas le plus complexe, on pourrait définir une notion de chemins rugueux pour définir des intégrales stochastiques fractionnaires
+		\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Solution numérique : Le schéma de Milstein}
+		Formule fermée non-nécessairement existante : 
+		Mouvement brownien standard $\Rightarrow$ Schéma numérique d'Euler
+		Mouvement brownien fractionnaire $\Rightarrow$ Schéma numérique de Milstein \newline
+		Ce schéma est donnée, pour tout $H \in ]0;1[$, par : 
+		\begin{multline}
+ 			\chi(t_{i+1}) =  \chi(t_i) + f(\chi(t_i), ti)\Delta t + g(\chi(t_i), t_i)\Delta B_i^H \\ + \frac{1}{2}g(\chi(t_i), t_i)g\prime(\chi(t_i), ti) [(\Delta B_i^H)^2 - (t_{i+1}^{2H} - t_i^{2H})] + \epsilon_i
+		\end{multline}
+		Ou 
+		\begin{multline}
+ 			\chi(t_{i+1}) =  \chi(t_i) + f(\chi(t_i), ti) - g(\chi(t_i), t_i)g\prime(\chi(t_i), t_i)Ht_i^{2H-1})\Delta t  \\ + g(\chi(t_i), t_i)\Delta B_i^H  + \frac{1}{2}g(\chi(t_i), t_i)g\prime(\chi(t_i), t_i)(\Delta B_i^H)^2 + \epsilon_i\prime
+		\end{multline}
+		
+		En partant du fait que : 
+		$t_{i+1}^{2H} = (t_i + \Delta t)  \approx t_i^{2H} + 2Ht_i^{2H-1}\Delta t$
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Le Processus d'Ornstein-Uhlenbeck fractionnaire : Définition et Solution numérique}
+		Le processus d'Ornstein-Uhlenbeck associé au mouvement brownien fractionnaire associé est donnée par l'équation : 
+    		\[ dX_t = \theta(t)(\mu (t)-X_t)dt + \sigma (t) dB^H_t\] 
+		Sa solution numérique est donnée par : 
+		\[ X_{j+1} = X_j + \theta(\mu - X_j)\Delta t + \sigma \Delta B_j^H \]
+		
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Le Processus d'Ornstein-Uhlenbeck fractionnaire : Simulations}
+		\begin{figure}[h!]
+  			\includegraphics[width=\linewidth, height=60mm]{SimulationspO-U-H.png}
+  			\caption{Simulation du processus d'Ornstein-Uhlenbeck pour différentes valeurs de H}
+ 			\label{fig:Simulation du processus d'Ornstein-Uhlenbeck pour différentes valeurs de H}
+		\end{figure}
+		
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{Les modèles fractionnaires : Le Modèle Rough Heston, la version classique }
+		Dynamique de prix et de volatilité dans le modèle classique :
+			\[ dS_t = S_t\sqrt{V_t}dW_t\] 
+			\[ dV_t = \lambda(\theta - V_t)dt + \lambda \nu \sqrt{V_t}dB_t\] avec 	$\langle dW_t, dB_t \rangle = \rho dt$, avec $\rho \in [-1;1]$ \newline
+			$W_t$ et $B_t$ sont deux mouvements browniens standards.
+			
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Les modèles fractionnaires : Le Modèle Rough Heston}
+		Dans ce modèle la volatilité est dirigée par un mouvement brownien fractionnaire
+		Plus généralement on a : 
+			\[ dS_t = S_t\sqrt{V_t}dW_t\]
+		La solution donnée pour $dV_t$ est donnée par :
+			\[  V_t = V_0 + \frac{1}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha-1}\lambda(\theta - V_s)ds + \frac{\lambda \nu}{\Gamma(\alpha)}\int_{0}^{t}(t-s)^{\alpha - 1}\sqrt{V_t}dB_s\]
+			
+		
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Le modèle RFSV : Définition, Partie 1}
+		Empiriquement, les incréments de la log-volatilité se rapproche de la distribution Gaussienne (démontré par Gatheral et Rosenbaum), de plus ces incréments possèdent une propriété d'échelle, Gatheral et Rosenbaum proposent le modèle de volatilité suivant : 
+		\[ log \sigma_{t+\Delta} - \log \sigma_t  = \nu (B^H_{t+\Delta} - B^H_t),\]
+		Où : $B_t^H$ est un mouvement brownien fractionnaire, $\nu > 0$ et $H$ l'index de Hurst mesuré empiriquement, la volatilité peut donc s'écrire :  
+		\[ \sigma_t = \sigma exp(\nu W^H_t)  \]	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Le modèle RFSV : La nécessité de l'utilisation du Processus d'Ornstein-Uhlenbeck fractionnaire, Partie 1}
+		Le modèle précédant n'étant pas stationnaire $\Rightarrow$ Considérer la log-volatilité non plus comme un mouvement brownien fractionnaire mais comme un processus d'Ornstein-Uhlenbeck fractionnaire (stationnaire) dont voici l'équation : 
+		\[ dX_t = \nu dB_t^H - \alpha(X_t-m)dt, \]
+		Sa forme explicite est donnée par : 
+		\[ X_t = \nu \int_{-\infty}^{t}e^{-\alpha(t-s)}dB_t^H + m \] \newpage
+		Avec : $m \in \mathbb{R}$, $\nu$ et $\alpha$ sont des paramètres positifs.
+	
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{Le modèle RFSV : La nécessité de l'utilisation du Processus d'Ornstein-Uhlenbeck fractionnaire, Partie 2}
+		On a maintenant : 
+		\[ \sigma_t = exp(X_t), \;\; t\in [0;T] \]
+		Avec : $\nu > 0, \alpha > 0, m\in \mathbb{R}$ et $H < \frac{1}{2}$, ce modèle est stationnaire, de plus lorsque $\alpha << 1/T$ la log-volatilité se comporte (localement) comme un mouvement brownien fractionnaire, de plus, selon Gatheral et 				Rosenbaum, lorsque $\alpha$ tends vers 0 on a : 
+			\[ \mathbb{E} [\sup_{t \in [0,T]}   \lvert X_t^\alpha - X_0^\alpha - \nu B_t^H \rvert ] \rightarrow 0  \]
+		Avec $B_t^H$ un mouvement brownien fractionnaire et $X_t^\alpha$ un processus d'Ornstein-Uhlenbeck défini plus haut. 
+		Cette assertion implique que si la condition $\alpha << 1/T$  est respectée et que l'on se restreint à une étude sur $[0;T]$ on peut agir comme si la log-volatilité était un mouvement brownien fractionnaire.
+		
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Le modèle RFSV : Prévisions de la volatilité dans le modèle RFSV}
+		Utilisation de la formule de Neuzmann-Poor :
+		\[ \mathbb{E}[B_{t+\Delta}^H \rvert F_t] = \frac{cos(H\pi)}{\pi}\Delta^{H+1/2}\int_{-\infty}^{t}\frac{B_s^H}{(t-s+\Delta)(t-s)^{H+1/2}}ds, \]
+		Avec : $B^H_t$ un mouvement brownien fractionnaire avec un paramètre de Hurst $H < 1/2$ et $F_t$ la filtration engendrée.\bigbreak
+		En approximant $\sigma_t$ par : $2\nu B_t^H + C$, avec $C$ et $\nu$ deux constantes, la formule de prédiction de la volatilité est donc donnée par :
+		\[ \mathbb{E}[log\sigma_{t+\Delta}^2 \rvert F_t] = \frac{cos(H\pi)}{\pi}\Delta^{H+1/2}\int_{-\infty}^{t}\frac{log \, \sigma_s^2}{(t-s+\Delta)(t-s)^{H+1/2}}ds  \]
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Le modèle RFSV : Prévisions de la volatilité dans le modèle RFSV, resultats}
+		\begin{figure}[H]
+  			\includegraphics[width=\linewidth, height=65mm]{GatheralVolatilite.png}
+  			\caption{Prévision de volatilité en rouge; données empiriques en bleu, graphique de Jim Gatheral}
+ 			\label{fig:figD}
+		\end{figure}
+		
+		
+\end{frame}
+
+
+
+
+
+\end{document}
